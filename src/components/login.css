@@ -1,0 +1,32 @@
+.loginFalse > input {
+  border: none;
+  border-bottom: 3px solid;
+  background-color: transparent;
+  width: 99%;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.loginFalse > input:focus {
+  outline: none;
+}
+
+.loginFalse > .buttonBox {
+  display: flex;
+  justify-content: space-between;
+}
+
+.loginTrue > .today {
+  width: 99%;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.loginTrue > hr {
+  border: 2px solid black;
+}
+
+.loginTrue > .buttonBox {
+  display: flex;
+  justify-content: space-between;
+}

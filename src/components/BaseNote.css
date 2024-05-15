@@ -1,0 +1,104 @@
+.baseNote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.baseNote_arrange {
+  display: flex;
+}
+
+.baseNote_arrange_btn {
+  height: 910px;
+  width: 900px;
+}
+
+.note {
+  background-color: #fff;
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 665px;
+  height: 910px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  /* 위 오 아래 왼 */
+  padding: 25px 15px 20px 30px;
+  box-sizing: border-box;
+  box-shadow: 2px 2px 2px 2px lightgray;
+  position: relative;
+}
+
+.note_header {
+  display: flex;
+  /* border: 1px solid red; */
+  justify-content: space-between;
+  width: 100%;
+}
+
+.note_header_left {
+  padding-left: 30px;
+  font-size: 25px;
+  font-weight: 900;
+  text-align: right;
+  align-self: flex-end;
+}
+
+.note_header_right {
+  font-size: 15px;
+  font-weight: 900;
+  display: flex;
+  flex-direction: column;
+  width: 151px;
+  margin-bottom: 5px;
+}
+
+.note_header_line {
+  margin-top: 5px;
+  border-bottom: 1px solid black;
+}
+
+.note_lines {
+  /* border: 1px solid red; */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 780px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.note_lines > .note_lines_bold {
+  border-bottom: 2px solid black;
+}
+.note_lines > div {
+  border-bottom: 1px dashed gray;
+  height: 29px;
+  /* z-index: 999; */
+}
+.note_lines > .note_lines_cross {
+  position: absolute;
+  height: 96%;
+  width: 0%;
+  border-left: 1px dashed gray;
+  margin-top: 29px;
+  margin-left: 120px;
+}
+
+.note_lines > .note_lines_bold_up {
+  height: 0px;
+}
+
+.note_footer {
+  font-size: 13px;
+  font-weight: 900;
+  text-align: end;
+}
+
+.note > .note_component {
+  margin-top: 59px;
+  position: absolute;
+}

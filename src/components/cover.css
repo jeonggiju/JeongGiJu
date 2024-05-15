@@ -1,0 +1,47 @@
+.cover {
+  width: 665px;
+  height: 910px;
+  border-radius: 5px;
+  background-image: url("/cover.jpg");
+  background-size: cover;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 200px 50px;
+  gap: 20px;
+  align-items: end;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
+.upText {
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.middleText {
+  font-weight: 700;
+  font-size: 16px;
+  width: 300px;
+}
+
+.downText {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.login_div {
+  width: 203px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.name {
+  font-size: 26px;
+  font-weight: 900;
+}
