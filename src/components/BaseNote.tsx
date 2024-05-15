@@ -36,41 +36,8 @@ export const BaseNote = (props: IProps) => {
               <div>year month day</div>
             </div>
           </div>
-
-          <div className="note_lines">
-            <div className="note_lines_bold note_lines_bold_up"></div>
-            <div className="note_lines_bold"></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div className="note_lines_bold"></div>
-            <div className="note_lines_cross"></div>
-          </div>
-
           <div className="note_component">
+            {/* <DefaultLines></DefaultLines> */}
             <DiaryDiv></DiaryDiv>
           </div>
           <div className="note_footer">Gi Ju Jeong</div>

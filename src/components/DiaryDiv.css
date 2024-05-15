@@ -10,7 +10,7 @@
   flex-direction: column;
   height: 780px;
   box-sizing: border-box;
-  width: 119px;
+  width: 120px;
   font-weight: 800;
 }
 
@@ -84,7 +84,7 @@
 .time > input {
   border: none;
   border-bottom: 1px solid black;
-  background-color: red;
+  /* background-color: red; */
   height: 18px;
   width: 20px;
   font-size: 16px;
@@ -92,6 +92,32 @@
   margin-top: 2px;
 }
 
-.time > input:hover {
+.time > input:focus {
+  border-bottom: 1px solid black;
+  outline: none;
+}
+
+.diaryDiv > .note_lines_cross {
+  position: absolute;
+  height: 750px;
+  width: 0%;
+  border-left: 1px dashed gray;
+  margin-top: 29px;
+  margin-left: 120px;
+}
+
+.note_right textarea {
+  position: absolute;
+  width: calc(100% - 20px);
+  height: 665px;
+  top: 109px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0);
+  resize: none;
+  outline: none;
+  overflow: hidden;
   border: none;
+  font-size: 15px;
+  line-height: 1.86em;
+  font-weight: 500;
 }

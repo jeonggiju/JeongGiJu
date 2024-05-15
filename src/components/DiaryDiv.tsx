@@ -1,15 +1,23 @@
+import { useState } from "react";
 import "./DiaryDiv.css";
 
 export const DiaryDiv = () => {
+  const [textData, setTextData] = useState<string>("");
+
+  const onChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTextData(e.target.value);
+    console.log(e.target.value.length);
+  };
   return (
     <div className="diaryDiv">
+      <div className="note_lines_cross"></div>
       <div className="note_left">
         <div className="note_bold note_bold_up"></div>
         <div className="note_bold"></div>
         <div>체크리스트</div>
         <div></div>
         <div></div>
-        <div></div>
+        <div>일기</div>
         <div></div>
         <div></div>
         <div></div>
@@ -56,7 +64,14 @@ export const DiaryDiv = () => {
           </div>
         </div>
         <div></div>
-        <div></div>
+        <div>
+          <textarea
+            onChange={onChangeTextArea}
+            value={textData}
+            spellCheck="false"
+            placeholder="오늘은 어떤 일이 있었나요?"
+          ></textarea>
+        </div>
         <div></div>
         <div></div>
         <div></div>
