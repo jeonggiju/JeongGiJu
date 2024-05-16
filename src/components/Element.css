@@ -1,19 +1,21 @@
 .element {
-  box-sizing: content-box;
-  /* border: 1px solid red; */
-  height: 57px;
+  box-sizing: box;
+  /* border: 0.0625rem solid red; */
+  height: 3.125rem;
+  width: 2.45rem;
   display: flex;
   flex-direction: column;
-  outline: auto;
+  /* outline: auto; */
 }
 
 .date {
-  width: 44px;
   text-align: center;
-  font-size: 16px;
+  width: 2.45rem;
+  font-size: 1rem;
 }
 
 .check {
+  padding-top: 0.05rem;
+  width: 2.45rem;
   text-align: center;
-  width: 44px;
 }

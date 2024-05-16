@@ -1,14 +1,14 @@
 .cover {
-  width: 665px;
-  height: 910px;
-  border-radius: 5px;
+  width: 37.40625rem;
+  height: 51.1875rem;
+  border-radius: 0.3125rem;
   background-image: url("/cover.jpg");
   background-size: cover;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding: 200px 50px;
-  gap: 20px;
+  padding: 11.25rem 2.8125rem;
+  gap: 1.125rem;
   align-items: end;
 }
 
@@ -19,29 +19,29 @@
 }
 
 .upText {
-  font-size: 26px;
+  font-size: 1.4625rem;
   font-weight: 900;
 }
 
 .middleText {
   font-weight: 700;
-  font-size: 16px;
-  width: 300px;
+  font-size: 0.9rem;
+  width: 16.875rem;
 }
 
 .downText {
-  font-size: 12px;
+  font-size: 0.675rem;
   font-weight: 700;
 }
 
 .login_div {
-  width: 203px;
+  width: 11.41875rem;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.5625rem;
 }
 
 .name {
-  font-size: 26px;
+  font-size: 1.4625rem;
   font-weight: 900;
 }

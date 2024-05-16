@@ -1,6 +1,6 @@
 .diaryDiv {
-  height: 780px;
-  width: 615px;
+  height: 43.875rem;
+  width: 34.59375rem;
   display: flex;
   z-index: 999;
 }
@@ -8,30 +8,30 @@
 .note_left {
   display: flex;
   flex-direction: column;
-  height: 780px;
+  height: 43.875rem;
   box-sizing: border-box;
-  width: 120px;
+  width: 6.75rem;
   font-weight: 800;
 }
 
 .diaryDiv .note_bold_up {
-  height: 0px;
+  height: 0rem;
 }
 
 .note_left > div {
-  height: 29px;
-  padding-left: 10px;
-  padding-right: 10px;
+  height: 1.63125rem;
+  padding-left: 0.5625rem;
+  padding-right: 0.5625rem;
   text-align: center;
-  border-bottom: 1px dashed gray;
+  border-bottom: 0.05625rem dashed gray;
 }
 
 .note_left > .note_left_up {
-  height: 0px;
+  height: 0rem;
 }
 
 .note_bold {
-  border-bottom: 2px solid black !important;
+  border-bottom: 0.1125rem solid black !important;
 }
 
 /*  */
@@ -39,29 +39,29 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 780px;
+  height: 43.875rem;
   position: absolute;
   box-sizing: border-box;
-  margin-left: 120px;
-  width: 496px;
+  margin-left: 6.75rem;
+  width: 27.9rem;
 }
 
 .note_right > div {
-  height: 29px;
-  padding-left: 10px;
-  padding-right: 10px;
-  border-bottom: 1px dashed gray;
+  height: 1.63125rem;
+  padding-left: 0.5625rem;
+  padding-right: 0.5625rem;
+  border-bottom: 0.05625rem dashed gray;
 }
 
 .right_one > * {
-  width: 150px;
-  /* border: 1px solid rebeccapurple; */
+  width: 8.4375rem;
+  /* border: 0.0625rem solid rebeccapurple; */
   text-align: center;
 }
 
 .right_two > * {
-  width: 150px;
-  /* border: 1px solid red; */
+  width: 8.4375rem;
+  /* border: 0.0625rem solid red; */
   display: flex;
   justify-content: center;
 }
@@ -78,46 +78,46 @@
 
 .time {
   display: flex;
-  /* padding-top: 2px; */
+  /* padding-top: 0.125rem; */
 }
 
 .time > input {
   border: none;
-  border-bottom: 1px solid black;
+  border-bottom: 0.05625rem solid black;
   /* background-color: red; */
-  height: 18px;
-  width: 20px;
-  font-size: 16px;
-  margin-left: 10px;
-  margin-top: 2px;
+  height: 1.0125rem;
+  width: 1.125rem;
+  font-size: 0.9rem;
+  margin-left: 0.5625rem;
+  margin-top: 0.1125rem;
 }
 
 .time > input:focus {
-  border-bottom: 1px solid black;
+  border-bottom: 0.05625rem solid black;
   outline: none;
 }
 
 .diaryDiv > .note_lines_cross {
   position: absolute;
-  height: 750px;
+  height: 42.1875rem;
   width: 0%;
-  border-left: 1px dashed gray;
-  margin-top: 29px;
-  margin-left: 120px;
+  border-left: 0.05625rem dashed gray;
+  margin-top: 1.63125rem;
+  margin-left: 6.75rem;
 }
 
 .note_right .firstTextArea {
   position: absolute;
-  width: calc(100% - 20px);
-  height: 673px;
-  top: 109px;
-  left: 10px;
+  width: calc(100% - 1.125rem);
+  height: 37.85625rem;
+  top: 6.13125rem;
+  left: 0.5625rem;
   background-color: rgba(255, 255, 255, 0);
   resize: none;
   outline: none;
   overflow: hidden;
   border: none;
-  font-size: 15px;
-  line-height: 1.86em;
+  font-size: 0.84375rem;
+  line-height: 1.855em;
   font-weight: 500;
 }

@@ -26,7 +26,7 @@ export const BaseNote = (props: IProps) => {
           return <DiaryDivOther></DiaryDivOther>;
         }
       case "SMOKING":
-        return <CheckLines />;
+        return <CheckLines></CheckLines>;
 
       default:
         return <DefaultLines></DefaultLines>;

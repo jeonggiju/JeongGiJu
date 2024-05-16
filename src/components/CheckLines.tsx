@@ -1,4 +1,4 @@
-import "./DiaryDivOther.css";
+import "./CheckLines.css";
 import Element from "./Element";
 
 export const CheckLines = () => {
@@ -70,6 +70,66 @@ export const CheckLines = () => {
       </div>
 
       <div className="rightContent">
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+        <Element />
+
         <Element />
         <Element />
         <Element />

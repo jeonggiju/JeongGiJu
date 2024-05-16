@@ -1,10 +1,10 @@
 .loginFalse > input {
   border: none;
-  border-bottom: 3px solid;
+  border-bottom: 0.16875rem solid;
   background-color: transparent;
   width: 99%;
-  font-size: 15px;
-  margin-bottom: 10px;
+  font-size: 0.84375rem;
+  margin-bottom: 0.5625rem;
 }
 
 .loginFalse > input:focus {
@@ -18,12 +18,12 @@
 
 .loginTrue > .today {
   width: 99%;
-  font-size: 20px;
+  font-size: 1.125rem;
   font-weight: 900;
 }
 
 .loginTrue > hr {
-  border: 2px solid black;
+  border: 0.1125rem solid black;
 }
 
 .loginTrue > .buttonBox {

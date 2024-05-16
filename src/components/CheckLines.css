@@ -1,74 +1,76 @@
 .checkLines {
-  height: 780px;
-  width: 615px;
+  height: 43.875rem;
+  width: 34.59375rem;
   display: flex;
   z-index: 999;
+  border: 1px solid red;
 }
 
 .checkLines_left {
   display: flex;
   flex-direction: column;
-  height: 780px;
+  height: 43.875rem;
   box-sizing: border-box;
-  width: 120px;
+  width: 6.75rem;
   font-weight: 800;
 }
 
 .checkLines .checkLines_bold_up {
-  height: 0px;
+  height: 0rem;
 }
 
 .checkLines_left > div {
-  height: 29px;
-  padding-left: 10px;
-  padding-right: 10px;
+  height: 1.63125rem;
+  padding-left: 0.5625rem;
+  padding-right: 0.5625rem;
   text-align: center;
-  border-bottom: 1px dashed gray;
+  border-bottom: 0.05625rem dashed gray;
 }
 
 .checkLines_bold {
-  border-bottom: 2px solid black !important;
+  border-bottom: 0.1125rem solid black !important;
 }
 
 .checkLines_right {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 780px;
+  height: 43.875rem;
   position: absolute;
   box-sizing: border-box;
-  margin-left: 120px;
-  width: 496px;
-  /* border: 1px solid rebeccapurple; */
+  margin-left: 6.75rem;
+  width: 27.9rem;
+  /* border: 0.0625rem solid rebeccapurple; */
 }
 
 .checkLines_right > div {
-  height: 29px;
-  padding-left: 10px;
-  padding-right: 10px;
-  border-bottom: 1px dashed gray;
+  height: 1.6425rem;
+  padding-left: 0.5625rem;
+  padding-right: 0.5625rem;
+  border-bottom: 0.05625rem dashed gray;
 }
 
 .checkLines > .checkLines_cross {
   position: absolute;
-  height: 750px;
+  height: 42.1875rem;
   width: 0%;
-  border-left: 1px dashed gray;
-  margin-top: 29px;
-  margin-left: 120px;
+  border-left: 0.05625rem dashed gray;
+  margin-top: 1.63125rem;
+  margin-left: 6.75rem;
 }
 
 .rightContent {
-  /* border: 1px solid green; */
+  /* border: 0.0625rem solid green; */
   display: flex;
   box-sizing: border-box;
   position: absolute;
-  /* height: 749px; */
-  width: 495px;
-  margin-top: 28px;
-  margin-left: 120px;
-  padding-left: 15px;
-  padding-right: 10px;
+  /* height: 46.8125rem; */
+  width: 27.84375rem;
+  margin-top: 1.575rem;
+  margin-left: 6.75rem;
+  padding-top: 0.1rem;
+  padding-left: 0.84375rem;
+  padding-right: 0.5625rem;
   flex-wrap: wrap;
-  column-gap: 3px;
+  column-gap: 0.16875rem;
 }

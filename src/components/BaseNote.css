@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 0.5625rem;
   position: relative;
 }
 
@@ -11,9 +11,9 @@
 }
 
 .baseNote_arrange_btn {
-  height: 910px;
-  width: 90px;
-  /* border: 1px solid red; */
+  height: 51.1875rem;
+  width: 5.0625rem;
+  /* border: 0.0625rem solid red; */
   background-color: rgba(211, 211, 211, 0);
   cursor: pointer;
   display: flex;
@@ -26,28 +26,28 @@
 }
 
 .baseNote_arrange_btn_left {
-  border-radius: 10px 10px 10px 10px;
+  border-radius: 0.625rem 0.625rem 0.625rem 0.625rem;
   position: absolute;
   z-index: 500;
-  left: -45px;
+  left: -2.53125rem;
 }
 
 .baseNote_arrange_btn_right {
-  border-radius: 10px 10px 10px 10px;
+  border-radius: 0.625rem 0.625rem 0.625rem 0.625rem;
   position: absolute;
-  right: -45px;
+  right: -2.53125rem;
 }
 
 .btn_box {
-  width: 40px;
-  height: 130px;
-  border-radius: 5px;
+  width: 2.25rem;
+  height: 7.3125rem;
+  border-radius: 0.3125rem;
   display: flex;
   justify-content: center;
-  /* border: 1px solid red; */
+  /* border: 0.0625rem solid red; */
   align-items: center;
   font-weight: 900;
-  font-size: 20px;
+  font-size: 1.125rem;
   color: #fff;
   background-image: linear-gradient(
     to bottom,
@@ -58,17 +58,17 @@
 
 .note {
   background-color: #fff;
-  border: 1px solid black;
-  border-radius: 5px;
-  width: 665px;
-  height: 910px;
+  border: 0.05625rem solid black;
+  border-radius: 0.3125rem;
+  width: 37.40625rem;
+  height: 51.1875rem;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 0.28125rem;
   /* 위 오 아래 왼 */
-  padding: 25px 15px 20px 30px;
+  padding: 1.40625rem 0.84375rem 1.125rem 1.6875rem;
   box-sizing: border-box;
-  box-shadow: 2px 2px 2px 2px lightgray;
+  box-shadow: 0.1125rem 0.1125rem 0.1125rem 0.1125rem lightgray;
   position: relative;
 }
 
@@ -79,29 +79,29 @@
 }
 
 .note_header_left {
-  padding-left: 30px;
-  font-size: 25px;
+  padding-left: 1.6875rem;
+  font-size: 1.40625rem;
   font-weight: 900;
   text-align: right;
   align-self: flex-end;
 }
 
 .note_header_right {
-  font-size: 15px;
+  font-size: 0.84375rem;
   font-weight: 900;
   display: flex;
   flex-direction: column;
-  width: 151px;
-  margin-bottom: 5px;
+  width: 8.49375rem;
+  margin-bottom: 0.28125rem;
 }
 
 .note_header_line {
-  margin-top: 5px;
-  border-bottom: 1px solid black;
+  margin-top: 0.28125rem;
+  border-bottom: 0.05625rem solid black;
 }
 
 .note_footer {
-  font-size: 13px;
+  font-size: 0.73125rem;
   font-weight: 900;
   text-align: end;
 }
