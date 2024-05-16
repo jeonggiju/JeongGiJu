@@ -1,11 +1,11 @@
-.diaryDiv {
+.diaryDivOther {
   height: 780px;
   width: 615px;
   display: flex;
   z-index: 999;
 }
 
-.note_left {
+.other_left {
   display: flex;
   flex-direction: column;
   height: 780px;
@@ -14,11 +14,11 @@
   font-weight: 800;
 }
 
-.diaryDiv .note_bold_up {
+.diaryDivOther .other_bold_up {
   height: 0px;
 }
 
-.note_left > div {
+.other_left > div {
   height: 29px;
   padding-left: 10px;
   padding-right: 10px;
@@ -26,16 +26,15 @@
   border-bottom: 1px dashed gray;
 }
 
-.note_left > .note_left_up {
+.other_left > .other_left_up {
   height: 0px;
 }
 
-.note_bold {
+.other_bold {
   border-bottom: 2px solid black !important;
 }
 
-/*  */
-.note_right {
+.other_right {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -46,58 +45,14 @@
   width: 496px;
 }
 
-.note_right > div {
+.other_right > div {
   height: 29px;
   padding-left: 10px;
   padding-right: 10px;
   border-bottom: 1px dashed gray;
 }
 
-.right_one > * {
-  width: 150px;
-  /* border: 1px solid rebeccapurple; */
-  text-align: center;
-}
-
-.right_two > * {
-  width: 150px;
-  /* border: 1px solid red; */
-  display: flex;
-  justify-content: center;
-}
-
-.right_one {
-  display: flex;
-  justify-content: space-evenly;
-  font-weight: 800;
-}
-.right_two {
-  display: flex;
-  justify-content: space-evenly;
-}
-
-.time {
-  display: flex;
-  /* padding-top: 2px; */
-}
-
-.time > input {
-  border: none;
-  border-bottom: 1px solid black;
-  /* background-color: red; */
-  height: 18px;
-  width: 20px;
-  font-size: 16px;
-  margin-left: 10px;
-  margin-top: 2px;
-}
-
-.time > input:focus {
-  border-bottom: 1px solid black;
-  outline: none;
-}
-
-.diaryDiv > .note_lines_cross {
+.diaryDivOther > .other_lines_cross {
   position: absolute;
   height: 750px;
   width: 0%;
@@ -106,11 +61,11 @@
   margin-left: 120px;
 }
 
-.note_right .firstTextArea {
+.other_right .nextTextArea {
   position: absolute;
+  top: 26px;
   width: calc(100% - 20px);
-  height: 673px;
-  top: 109px;
+  height: 750px;
   left: 10px;
   background-color: rgba(255, 255, 255, 0);
   resize: none;

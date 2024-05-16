@@ -7,5 +7,5 @@
 }
 
 .button:hover {
-  font-size: 18px;
+  transform: scale(1.1);
 }

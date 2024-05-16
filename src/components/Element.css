@@ -1,0 +1,19 @@
+.element {
+  box-sizing: content-box;
+  /* border: 1px solid red; */
+  height: 57px;
+  display: flex;
+  flex-direction: column;
+  outline: auto;
+}
+
+.date {
+  width: 44px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.check {
+  text-align: center;
+  width: 44px;
+}

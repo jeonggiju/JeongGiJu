@@ -1,9 +1,9 @@
 import { useState } from "react";
-import "./DiaryDiv.css";
+import "./DiaryDivOther.css";
 import Button from "./Button";
 import { useParams } from "react-router-dom";
 
-export const DiaryDiv = () => {
+export const DiaryDivOther = () => {
   const [textData, setTextData] = useState<string>("");
   const param = useParams();
 
@@ -16,14 +16,11 @@ export const DiaryDiv = () => {
     }
   };
   return (
-    <div className="diaryDiv">
-      <div className="note_lines_cross"></div>
-      <div className="note_left">
-        <div className="note_bold note_bold_up"></div>
-        <div className="note_bold"></div>
-        <div>체크리스트</div>
-        <div></div>
-        <div></div>
+    <div className="diaryDivOther">
+      <div className="other_lines_cross"></div>
+      <div className="other_left">
+        <div className="other_bold other_bold_up"></div>
+        <div className="other_bold"></div>
         <div>일기 {param.page}</div>
         <div></div>
         <div></div>
@@ -47,39 +44,23 @@ export const DiaryDiv = () => {
         <div></div>
         <div></div>
         <div></div>
-        <div className="note_bold">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div className="other_bold">
           <Button text="작성 완료"></Button>
         </div>
       </div>
 
-      <div className="note_right">
-        <div className="note_bold note_bold_up"></div>
-        <div className="note_bold"></div>
-        <div className="right_one">
-          <div>공부 시간</div>
-          <div>운동</div>
-          <div>흡연</div>
-        </div>
-        <div className="right_two">
-          <div className="time">
-            <input type="text" />시
-            <input type="text" />분
-          </div>
-          <div>
-            <input type="checkbox" />
-          </div>
-          <div>
-            <input type="checkbox" />
-          </div>
-        </div>
-        <div></div>
-        <div>
+      <div className="other_right">
+        <div className="other_bold other_bold_up"></div>
+        <div className="other_bold">
           <textarea
-            className="firstTextArea"
+            className="nextTextArea"
             onChange={onChangeTextArea}
             value={textData}
             spellCheck="false"
-            placeholder="오늘은 어떤 일이 있었나요?"
+            placeholder="다음 이야기가 궁금해요!"
           ></textarea>
         </div>
         <div></div>
@@ -104,10 +85,14 @@ export const DiaryDiv = () => {
         <div></div>
         <div></div>
         <div></div>
-        <div className="note_bold"></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div className="other_bold"></div>
       </div>
     </div>
   );
 };
 
-export default DiaryDiv;
+export default DiaryDivOther;

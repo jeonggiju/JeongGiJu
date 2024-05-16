@@ -3,6 +3,10 @@
   src: url("/NotoSansKR-VariableFont_wght.ttf");
 }
 
+* {
+  user-select: none;
+}
+
 html,
 body {
   margin: 0px;

@@ -7,6 +7,7 @@
   height: 780px;
   position: relative;
   box-sizing: border-box;
+  border: 1px solid rebeccapurple;
 }
 
 .note_lines > .note_lines_bold {
