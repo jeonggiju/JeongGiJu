@@ -1,20 +1,77 @@
-import { useState } from "react";
-import "./DiaryDiv.css";
+import { useRef, useState } from "react";
+import "./css/DiaryDiv.css";
 import Button from "./Button";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { setHourMinute } from "../utils/date";
+import { useDaysDispatchContext } from "../hook/useDaysDispatchContext";
+import { useDiariesDispatchStateContext } from "../hook/useDiariesDispatchStateContext";
+import { useDiariesStateContext } from "../hook/useDiariesStateContext";
 
 export const DiaryDiv = () => {
-  const [textData, setTextData] = useState<string>("");
+  const nav = useNavigate();
   const param = useParams();
+  const { onCreate } = useDaysDispatchContext();
+  const [hourState, setHourState] = useState<number>(0);
+  const [minuteState, setMinuteState] = useState<number>(0);
+  const [smokingState, setSmokingState] = useState<boolean>(false);
+  const [exerciseState, setExerciseState] = useState<boolean>(false);
+  const diaryData = useDiariesStateContext();
+  const { onCreateDiary } = useDiariesDispatchStateContext();
+
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const onChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setTextData(e.target.value);
+    if (textAreaRef.current) {
+      textAreaRef.current.style.height = "auto";
+      textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
+    }
+
+    onCreateDiary({ page: Number(param.page), diary: e.target.value });
+
     console.log(`글자 수: ${e.target.value.length}`);
     console.log(`높이: ${e.target.scrollHeight}`);
-    if (e.target.scrollHeight > 677) {
-      console.log("다음 페이지로 넘어가야함");
+
+    // 다음페이지로 넘어가야할 때
+    // if (e.target.scrollHeight > 609) {
+    // }
+  };
+
+  const onChangeHourInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHourState(Number(e.target.value));
+  };
+
+  const onChangeMinuteInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMinuteState(Number(e.target.value));
+  };
+
+  const onChangeExerciseCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setExerciseState(e.target.checked);
+  };
+
+  const onChangeSmokingCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSmokingState(e.target.checked);
+  };
+
+  const onClickSubmit = () => {
+    const newDay = {
+      email: "111@344",
+      studyTime: setHourMinute(hourState, minuteState),
+      smoking: smokingState,
+      exercise: exerciseState,
+      diary: diaryData
+        .map((el) => {
+          if (el.diary !== "") return el.diary;
+        })
+        .join(" "), // page 단위의 string 배열을 합침
+    };
+
+    const result = window.confirm("오늘 일기를 다 쓰셨나요?");
+    if (result) {
+      onCreate(newDay);
+      nav("/DIARY/1", { replace: true });
     }
   };
+
   return (
     <div className="diaryDiv">
       <div className="note_lines_cross"></div>
@@ -48,7 +105,7 @@ export const DiaryDiv = () => {
         <div></div>
         <div></div>
         <div className="note_bold">
-          <Button text="작성 완료"></Button>
+          <Button onClick={onClickSubmit} text="작성 완료"></Button>
         </div>
       </div>
 
@@ -62,22 +119,48 @@ export const DiaryDiv = () => {
         </div>
         <div className="right_two">
           <div className="time">
-            <input type="text" />시
-            <input type="text" />분
+            <input
+              type="number"
+              value={hourState}
+              min={0}
+              max={24}
+              onChange={onChangeHourInput}
+            />
+            시간
+            <input
+              type="number"
+              min={0}
+              max={60}
+              value={minuteState}
+              onChange={onChangeMinuteInput}
+            />
+            분
           </div>
           <div>
-            <input type="checkbox" />
+            <input
+              name="exercise"
+              type="checkbox"
+              checked={exerciseState}
+              onChange={onChangeExerciseCheckbox}
+            />
           </div>
           <div>
-            <input type="checkbox" />
+            <input
+              name="smoking"
+              type="checkbox"
+              checked={smokingState}
+              onChange={onChangeSmokingCheckbox}
+            />
           </div>
         </div>
         <div></div>
         <div>
           <textarea
+            ref={textAreaRef}
+            id="firstTextArea"
             className="firstTextArea"
             onChange={onChangeTextArea}
-            value={textData}
+            value={diaryData[Number(param.page)].diary}
             spellCheck="false"
             placeholder="오늘은 어떤 일이 있었나요?"
           ></textarea>

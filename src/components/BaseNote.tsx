@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import "./BaseNote.css";
+import "./css/BaseNote.css";
 import Island from "./Island";
 import { useEffect, useRef } from "react";
 import DiaryDiv from "./DiaryDiv";
@@ -27,7 +27,10 @@ export const BaseNote = (props: IProps) => {
         }
       case "SMOKING":
         return <CheckLines></CheckLines>;
-
+      case "EXERCISE":
+        return <CheckLines></CheckLines>;
+      case "STUDY":
+        return <CheckLines></CheckLines>;
       default:
         return <DefaultLines></DefaultLines>;
     }

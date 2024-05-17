@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./cover.css";
+import "./css/cover.css";
 import { LoginFalse, LoginTrue } from "./Login";
 
 export const Cover = () => {

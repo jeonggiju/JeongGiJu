@@ -1,0 +1,38 @@
+.element {
+  box-sizing: border-box;
+  /* border: 0.0625rem solid red; */
+  height: 3.125rem;
+  width: 2.45rem;
+  display: flex;
+  flex-direction: column;
+  /* outline: auto; */
+}
+
+.date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 2.45rem;
+  font-size: 0.75rem;
+  height: 1.5625rem;
+  font-weight: 700;
+}
+
+.element_content {
+  display: flex;
+  justify-content: center;
+  padding-top: 0.2rem;
+  width: 2.45rem;
+  text-align: center;
+  height: 1.5625rem;
+  font-size: 0.8rem;
+}
+
+.element_content_false {
+  color: red;
+}
+.element_content_true {
+  color: blue;
+  font-weight: 800;
+}

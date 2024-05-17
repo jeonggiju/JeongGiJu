@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
-import "./login.css";
+import "./css/login.css";
 import { getDate } from "../utils/date";
 
 interface IProps {

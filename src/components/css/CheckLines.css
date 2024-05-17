@@ -3,7 +3,7 @@
   width: 34.59375rem;
   display: flex;
   z-index: 999;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 
 .checkLines_left {

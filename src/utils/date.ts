@@ -8,3 +8,8 @@ export function getDate() {
   const curDate = `${year}-${month}-${day}`;
   return curDate;
 }
+
+export function setHourMinute(hour: number, minute: number) {
+  const time = new Date(hour * 60 * 60 * 1000 + minute * 60 * 1000);
+  return time;
+}

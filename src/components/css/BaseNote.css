@@ -22,7 +22,7 @@
 }
 
 .baseNote_arrange_btn:hover {
-  background-color: rgba(211, 211, 211, 0.3);
+  background-color: rgba(211, 211, 211, 0.8);
 }
 
 .baseNote_arrange_btn_left {
@@ -48,10 +48,10 @@
   align-items: center;
   font-weight: 900;
   font-size: 1.125rem;
-  color: #fff;
+  color: gray;
   background-image: linear-gradient(
     to bottom,
-    rgba(211, 211, 211, 0.4),
+    rgba(200, 200, 200, 0.9),
     rgba(255, 255, 255, 0.4)
   );
 }

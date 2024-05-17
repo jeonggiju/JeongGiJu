@@ -1,4 +1,4 @@
-import "./CheckLines.css";
+import "./css/CheckLines.css";
 import Element from "./Element";
 
 export const CheckLines = () => {
@@ -70,161 +70,126 @@ export const CheckLines = () => {
       </div>
 
       <div className="rightContent">
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-
-        <Element />
-        <Element />
-        <Element />
-        <Element />
-        <Element />
+        <Element check={false} date="05/24" />
+        <Element check={false} date="05/24" />
+        <Element check={false} date="05/24" />
+        <Element check={false} date="05/24" />
+        <Element check={false} date="05/24" />
+        <Element check={false} date="05/24" />
+        <Element check={false} date="05/24" />
+        <Element check={false} date="05/24" />
+        <Element check={false} date="05/24" />
+        <Element check={false} date="05/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element time="05:12" date="5/24" />
+        <Element time="05:12" date="5/24" />
+        <Element time="05:12" date="5/24" />
+        <Element time="05:12" date="5/24" />
+        <Element time="05:12" date="5/24" />
+        <Element time="05:12" date="5/24" />
+        <Element time="05:12" date="5/24" />
+        <Element time="05:12" date="5/24" />
+        <Element time="5:12" date="5/24" />
+        <Element time="5:12" date="5/24" />
+        <Element time="5:12" date="5/24" />
+        <Element time="5:12" date="5/24" />
+        <Element time="5:12" date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={true} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={true} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
+        <Element check={false} date="5/24" />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Island.css";
+import "./css/Island.css";
 import { useNavigate } from "react-router-dom";
 
 interface IProp {

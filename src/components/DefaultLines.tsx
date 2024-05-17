@@ -1,4 +1,4 @@
-import "./DefaultLines.css";
+import "./css/DefaultLines.css";
 
 export const DefaultLines = () => {
   return (

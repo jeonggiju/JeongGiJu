@@ -86,7 +86,7 @@
   border-bottom: 0.05625rem solid black;
   /* background-color: red; */
   height: 1.0125rem;
-  width: 1.125rem;
+  width: 2rem;
   font-size: 0.9rem;
   margin-left: 0.5625rem;
   margin-top: 0.1125rem;
@@ -109,7 +109,7 @@
 .note_right .firstTextArea {
   position: absolute;
   width: calc(100% - 1.125rem);
-  height: 37.85625rem;
+  /* height: 37.85625rem; */
   top: 6.13125rem;
   left: 0.5625rem;
   background-color: rgba(255, 255, 255, 0);
@@ -120,4 +120,5 @@
   font-size: 0.84375rem;
   line-height: 1.855em;
   font-weight: 500;
+  /* outline: auto; */
 }

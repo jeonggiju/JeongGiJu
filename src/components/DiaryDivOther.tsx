@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./DiaryDivOther.css";
+import "./css/DiaryDivOther.css";
 import Button from "./Button";
 import { useParams } from "react-router-dom";
 
