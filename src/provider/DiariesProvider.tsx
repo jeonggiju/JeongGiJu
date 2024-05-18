@@ -43,13 +43,14 @@ function reducer(state: DiaryElement[], action: Action): DiaryElement[] {
 
   switch (action.type) {
     case "CREATE":
-      nextState = state.map((item) => {
-        if (Number(item.page) === Number(action.data.page)) {
-          return action.data;
-        } else {
-          return item;
-        }
-      });
+      nextState = [action.data, ...state];
+      // nextState = state.map((item) => {
+      //   if (Number(item.page) === Number(action.data.page)) {
+      //     return action.data;
+      //   } else {
+      //     return item;
+      //   }
+      // });
       break;
     case "UPDATE":
       nextState = state.map((item) =>

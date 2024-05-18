@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./css/DiaryDiv.css";
 import Button from "./Button";
 import { useNavigate, useParams } from "react-router-dom";
@@ -18,6 +18,8 @@ export const DiaryDiv = () => {
   const diaryData = useDiariesStateContext();
   const { onCreateDiary } = useDiariesDispatchStateContext();
 
+  const [curDiaryState, setCurDiaryState] = useState<string>("");
+
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const onChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -26,14 +28,17 @@ export const DiaryDiv = () => {
       textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
     }
 
-    onCreateDiary({ page: Number(param.page), diary: e.target.value });
+    setCurDiaryState(e.target.value);
+    // onCreateDiary({ page: Number(param.page), diary: e.target.value });
 
     console.log(`글자 수: ${e.target.value.length}`);
     console.log(`높이: ${e.target.scrollHeight}`);
 
     // 다음페이지로 넘어가야할 때
-    // if (e.target.scrollHeight > 609) {
-    // }
+    if (e.target.scrollHeight > 609) {
+      onCreateDiary({ page: Number(param.page), diary: curDiaryState });
+      nav(`/TODAY/${Number(param.page) + 1}`);
+    }
   };
 
   const onChangeHourInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,24 +58,28 @@ export const DiaryDiv = () => {
   };
 
   const onClickSubmit = () => {
-    const newDay = {
-      email: "111@344",
-      studyTime: setHourMinute(hourState, minuteState),
-      smoking: smokingState,
-      exercise: exerciseState,
-      diary: diaryData
-        .map((el) => {
-          if (el.diary !== "") return el.diary;
-        })
-        .join(" "), // page 단위의 string 배열을 합침
-    };
-
     const result = window.confirm("오늘 일기를 다 쓰셨나요?");
     if (result) {
+      const newDay = {
+        email: "111@344",
+        studyTime: setHourMinute(hourState, minuteState),
+        smoking: smokingState,
+        exercise: exerciseState,
+        diary: diaryData
+          .map((el) => {
+            if (el.diary !== "") return el.diary;
+          })
+          .join(" "), // page 단위의 string 배열을 합침
+      };
+
       onCreate(newDay);
       nav("/DIARY/1", { replace: true });
     }
   };
+
+  useEffect(() => {
+    setCurDiaryState(diaryData[Number(param.page)].diary);
+  }, [param.page, diaryData]);
 
   return (
     <div className="diaryDiv">
@@ -160,7 +169,7 @@ export const DiaryDiv = () => {
             id="firstTextArea"
             className="firstTextArea"
             onChange={onChangeTextArea}
-            value={diaryData[Number(param.page)].diary}
+            value={curDiaryState}
             spellCheck="false"
             placeholder="오늘은 어떤 일이 있었나요?"
           ></textarea>
