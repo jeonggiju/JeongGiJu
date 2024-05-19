@@ -1,0 +1,45 @@
+.baseNote_arrange_btn {
+  height: 51.1875rem;
+  width: 5.0625rem;
+  /* border: 0.0625rem solid red; */
+  background-color: rgba(211, 211, 211, 0);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.baseNote_arrange_btn:hover {
+  background-color: rgba(211, 211, 211, 0.8);
+}
+
+.baseNote_arrange_btn_left {
+  border-radius: 0.625rem 0.625rem 0.625rem 0.625rem;
+  position: absolute;
+  z-index: 500;
+  left: -2.53125rem;
+}
+
+.baseNote_arrange_btn_right {
+  border-radius: 0.625rem 0.625rem 0.625rem 0.625rem;
+  position: absolute;
+  right: -2.53125rem;
+}
+
+.btn_box {
+  width: 2.25rem;
+  height: 7.3125rem;
+  border-radius: 0.3125rem;
+  display: flex;
+  justify-content: center;
+  /* border: 0.0625rem solid red; */
+  align-items: center;
+  font-weight: 900;
+  font-size: 1.125rem;
+  color: gray;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(200, 200, 200, 0.9),
+    rgba(255, 255, 255, 0.4)
+  );
+}

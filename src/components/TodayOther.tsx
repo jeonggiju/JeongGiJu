@@ -1,9 +1,9 @@
 import { useState } from "react";
-import "./css/DiaryDivOther.css";
+import "./css/TodayOther.css";
 import Button from "./Button";
 import { useParams } from "react-router-dom";
 
-export const DiaryDivOther = () => {
+export const TodayOther = () => {
   const [textData, setTextData] = useState<string>("");
   const param = useParams();
 
@@ -15,6 +15,7 @@ export const DiaryDivOther = () => {
       console.log("다음 페이지로 넘어가야함");
     }
   };
+
   return (
     <div className="diaryDivOther">
       <div className="other_lines_cross"></div>
@@ -95,4 +96,4 @@ export const DiaryDivOther = () => {
   );
 };
 
-export default DiaryDivOther;
+export default TodayOther;

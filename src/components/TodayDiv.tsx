@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import "./css/DiaryDiv.css";
+import "./css/TodayDiv.css";
 import Button from "./Button";
 import { useNavigate, useParams } from "react-router-dom";
 import { setHourMinute } from "../utils/date";
@@ -7,79 +7,99 @@ import { useDaysDispatchContext } from "../hook/useDaysDispatchContext";
 import { useDiariesDispatchStateContext } from "../hook/useDiariesDispatchStateContext";
 import { useDiariesStateContext } from "../hook/useDiariesStateContext";
 
-export const DiaryDiv = () => {
+export const TodayDiv = () => {
   const nav = useNavigate();
   const param = useParams();
+
+  const [hourState, setHourState] = useState(0);
+  const [minuteState, setMinuteState] = useState(0);
+  const [submitState, setSubmitState] = useState(false); // 제출할 때 비동기적으로 처리됨을 해결
+
   const { onCreate } = useDaysDispatchContext();
-  const [hourState, setHourState] = useState<number>(0);
-  const [minuteState, setMinuteState] = useState<number>(0);
-  const [smokingState, setSmokingState] = useState<boolean>(false);
-  const [exerciseState, setExerciseState] = useState<boolean>(false);
-  const diaryData = useDiariesStateContext();
-  const { onCreateDiary } = useDiariesDispatchStateContext();
+  const {
+    onCreateDiary,
+    onToggleExerciseCheck,
+    onUpdateStudyTimeCheck,
+    onToggleSmokingCheck,
+  } = useDiariesDispatchStateContext();
+  const { diaryData, checkData } = useDiariesStateContext();
 
   const [curDiaryState, setCurDiaryState] = useState<string>("");
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  const onChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const adjustTextAreaHeight = () => {
     if (textAreaRef.current) {
       textAreaRef.current.style.height = "auto";
       textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
-    }
-
-    setCurDiaryState(e.target.value);
-    // onCreateDiary({ page: Number(param.page), diary: e.target.value });
-
-    console.log(`글자 수: ${e.target.value.length}`);
-    console.log(`높이: ${e.target.scrollHeight}`);
-
-    // 다음페이지로 넘어가야할 때
-    if (e.target.scrollHeight > 609) {
-      onCreateDiary({ page: Number(param.page), diary: curDiaryState });
-      nav(`/TODAY/${Number(param.page) + 1}`);
     }
   };
 
   const onChangeHourInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setHourState(Number(e.target.value));
+    onUpdateStudyTimeCheck(setHourMinute(hourState, minuteState));
   };
-
   const onChangeMinuteInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMinuteState(Number(e.target.value));
+    onUpdateStudyTimeCheck(setHourMinute(hourState, minuteState));
   };
 
-  const onChangeExerciseCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setExerciseState(e.target.checked);
-  };
-
-  const onChangeSmokingCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSmokingState(e.target.checked);
-  };
-
-  const onClickSubmit = () => {
-    const result = window.confirm("오늘 일기를 다 쓰셨나요?");
-    if (result) {
-      const newDay = {
-        email: "111@344",
-        studyTime: setHourMinute(hourState, minuteState),
-        smoking: smokingState,
-        exercise: exerciseState,
-        diary: diaryData
-          .map((el) => {
-            if (el.diary !== "") return el.diary;
-          })
-          .join(" "), // page 단위의 string 배열을 합침
-      };
-
-      onCreate(newDay);
-      nav("/DIARY/1", { replace: true });
+  const onChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    // 다음페이지로 넘어가야할 때
+    if (e.target.scrollHeight > 609) {
+      onCreateDiary({ page: Number(param.page), diary: curDiaryState });
+      console.log({ diaryData });
+      nav(`/TODAY/${Number(param.page) + 1}`);
+    } else {
+      setCurDiaryState(e.target.value);
     }
   };
 
+  const onClickSubmit = () => {
+    onCreateDiary({ page: Number(param.page), diary: curDiaryState });
+    setSubmitState(true);
+  };
+
   useEffect(() => {
-    setCurDiaryState(diaryData[Number(param.page)].diary);
-  }, [param.page, diaryData]);
+    if (submitState) {
+      const result = window.confirm("오늘 일기를 다 쓰셨나요?");
+      if (result) {
+        const newDay = {
+          email: "111@344",
+          studyTime: checkData.studyTime,
+          smoking: checkData.smoking,
+          exercise: checkData.exercise,
+          diary: diaryData
+            .map((el) => {
+              if (el.diary !== "") return el.diary;
+            })
+            .join(""), // page 단위의 string 배열을 합침
+        };
+
+        onCreate(newDay);
+        // nav("/DIARY/1", { replace: true });
+        setSubmitState(false);
+      }
+    }
+  }, [
+    submitState, // <--
+    onCreate,
+    checkData,
+    diaryData,
+  ]);
+
+  useEffect(() => {
+    setCurDiaryState(diaryData[Number(param.page) - 1].diary);
+  }, [
+    param.page, // <- 처음 랜더링 될 때
+    diaryData,
+  ]);
+
+  useEffect(() => {
+    adjustTextAreaHeight();
+  }, [
+    curDiaryState, // <- 입력이 될 때 마다
+  ]);
 
   return (
     <div className="diaryDiv">
@@ -149,16 +169,16 @@ export const DiaryDiv = () => {
             <input
               name="exercise"
               type="checkbox"
-              checked={exerciseState}
-              onChange={onChangeExerciseCheckbox}
+              // checked={exerciseState}
+              onChange={onToggleExerciseCheck}
             />
           </div>
           <div>
             <input
               name="smoking"
               type="checkbox"
-              checked={smokingState}
-              onChange={onChangeSmokingCheckbox}
+              // checked={smokingState}
+              onChange={onToggleSmokingCheck}
             />
           </div>
         </div>
@@ -202,4 +222,4 @@ export const DiaryDiv = () => {
   );
 };
 
-export default DiaryDiv;
+export default TodayDiv;
