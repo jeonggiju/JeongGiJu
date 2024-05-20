@@ -7,6 +7,7 @@ interface IProps {
   children: React.ReactNode;
   site: string;
   page: string;
+  today?: string;
   onClickRight: () => void;
   onClickLeft: () => void;
 }
@@ -15,6 +16,7 @@ export const BaseNote = ({
   site,
   page,
   children,
+  today,
   onClickLeft,
   onClickRight,
 }: IProps) => {
@@ -33,7 +35,7 @@ export const BaseNote = ({
             <div className="note_header_right">
               <div>NO. {page}</div>
               <div className="note_header_line"></div>
-              <div>year month day</div>
+              {today ? <div>{today}</div> : <div>year month day</div>}
             </div>
           </div>
           <div className="note_component">{children}</div>

@@ -7,7 +7,7 @@ interface Day {
   email: string;
   smoking: boolean;
   exercise: boolean;
-  studyTime: Date;
+  studyTime: { hour: number; minute: number };
   diary: string;
 }
 

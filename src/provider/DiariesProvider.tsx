@@ -1,4 +1,10 @@
-import { ReactNode, createContext, useReducer } from "react";
+import {
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useReducer,
+  useState,
+} from "react";
 import { setHourMinute } from "../utils/date";
 
 interface DiaryElement {
@@ -9,29 +15,33 @@ interface DiaryElement {
 interface CheckElement {
   smoking: boolean;
   exercise: boolean;
-  studyTime: Date;
+  studyTime: { hour: number; minute: number };
 }
 
 interface ActionDiary {
-  type: "CREATE";
-  data: DiaryElement;
+  type: "CREATE" | "INIT";
+  data?: DiaryElement;
 }
 
 interface ActionCheck {
-  type: "TOGGLE_SMOKING" | "TOGGLE_EXERCISE" | "UPDATE_STUDY_TIME";
+  type: "UPDATE_SMOKING" | "UPDATE_EXERCISE" | "UPDATE_STUDY_TIME" | "INIT";
   data: CheckElement;
 }
 
 interface DiaryDispatch {
   onCreateDiary: ({ page, diary }: IOnCreateDiary) => void;
-  onToggleSmokingCheck: () => void;
-  onToggleExerciseCheck: () => void;
-  onUpdateStudyTimeCheck: (studyTime: Date) => void;
+  onInitDiary: () => void;
+  onUpdateSmokingCheck: (smoking: boolean) => void;
+  onUpdateExerciseCheck: (exercise: boolean) => void;
+  onUpdateStudyTimeCheck: (studyTime: { hour: number; minute: number }) => void;
+  setCurDiaryState: React.Dispatch<SetStateAction<string>>;
+  onInitCheck: () => void;
 }
 
 interface DiaryState {
   diaryData: DiaryElement[];
   checkData: CheckElement;
+  curDiaryState: string;
 }
 
 interface IOnCreateDiary {
@@ -61,14 +71,17 @@ function CheckReducer(state: CheckElement, action: ActionCheck): CheckElement {
   let nextState: CheckElement;
 
   switch (action.type) {
-    case "TOGGLE_SMOKING":
-      nextState = { ...state, smoking: !state.smoking };
+    case "UPDATE_SMOKING":
+      nextState = { ...state, smoking: action.data.smoking };
       break;
-    case "TOGGLE_EXERCISE":
-      nextState = { ...state, exercise: !state.exercise };
+    case "UPDATE_EXERCISE":
+      nextState = { ...state, exercise: action.data.exercise };
       break;
     case "UPDATE_STUDY_TIME":
       nextState = { ...state, studyTime: action.data.studyTime };
+      break;
+    case "INIT":
+      nextState = baseCheck;
       break;
     default:
       nextState = state;
@@ -86,8 +99,11 @@ function DiaryReducer(
   switch (action.type) {
     case "CREATE":
       nextState = state.map((item) =>
-        item.page === action.data.page ? action.data : item
+        item.page === action.data!.page ? action.data! : item
       );
+      break;
+    case "INIT":
+      nextState = baseDiary;
       break;
     default:
       nextState = state;
@@ -108,31 +124,45 @@ const DiariesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     React.Reducer<CheckElement, ActionCheck>
   >(CheckReducer, baseCheck);
 
-  const onToggleSmokingCheck = () => {
+  // 현재 페이지의 데이터
+  const [curDiaryState, setCurDiaryState] = useState<string>("");
+  const onUpdateSmokingCheck = (smoking: boolean) => {
     checkDispatch({
-      type: "TOGGLE_SMOKING",
+      type: "UPDATE_SMOKING",
       data: {
         ...checkData,
+        smoking,
       },
     });
   };
 
-  const onToggleExerciseCheck = () => {
+  const onUpdateExerciseCheck = (exercise: boolean) => {
     checkDispatch({
-      type: "TOGGLE_EXERCISE",
+      type: "UPDATE_EXERCISE",
       data: {
         ...checkData,
+        exercise,
       },
     });
   };
 
-  const onUpdateStudyTimeCheck = (studyTime: Date) => {
+  const onUpdateStudyTimeCheck = (studyTime: {
+    hour: number;
+    minute: number;
+  }) => {
     checkDispatch({
       type: "UPDATE_STUDY_TIME",
       data: {
         ...checkData,
         studyTime,
       },
+    });
+  };
+
+  const onInitCheck = () => {
+    checkDispatch({
+      type: "INIT",
+      data: { ...checkData },
     });
   };
 
@@ -146,14 +176,29 @@ const DiariesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     });
   };
 
+  const onInitDiary = () => {
+    diaryDispatch({
+      type: "INIT",
+    });
+  };
+
   return (
-    <DiaryStateContext.Provider value={{ diaryData, checkData }}>
+    <DiaryStateContext.Provider
+      value={{
+        diaryData,
+        checkData,
+        curDiaryState,
+      }}
+    >
       <DiaryDispatchContext.Provider
         value={{
           onCreateDiary,
-          onToggleExerciseCheck,
-          onToggleSmokingCheck,
+          onInitDiary,
+          onUpdateExerciseCheck,
+          onUpdateSmokingCheck,
           onUpdateStudyTimeCheck,
+          onInitCheck,
+          setCurDiaryState,
         }}
       >
         {children}

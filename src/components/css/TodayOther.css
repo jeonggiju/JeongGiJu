@@ -63,9 +63,9 @@
 
 .other_right .nextTextArea {
   position: absolute;
-  top: 1.4625rem;
+  top: 1.5225rem;
   width: calc(100% - 1.125rem);
-  height: 42.1825rem;
+  /* height: 42.1825rem; */
   left: 0.5625rem;
   background-color: rgba(255, 255, 255, 0);
   resize: none;
@@ -73,6 +73,6 @@
   overflow: hidden;
   border: none;
   font-size: 0.84375rem;
-  line-height: 1.855em;
+  line-height: 1.85em;
   font-weight: 500;
 }

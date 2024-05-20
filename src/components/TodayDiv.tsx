@@ -2,29 +2,32 @@ import { useEffect, useRef, useState } from "react";
 import "./css/TodayDiv.css";
 import Button from "./Button";
 import { useNavigate, useParams } from "react-router-dom";
-import { setHourMinute } from "../utils/date";
 import { useDaysDispatchContext } from "../hook/useDaysDispatchContext";
 import { useDiariesDispatchStateContext } from "../hook/useDiariesDispatchStateContext";
 import { useDiariesStateContext } from "../hook/useDiariesStateContext";
 
-export const TodayDiv = () => {
-  const nav = useNavigate();
-  const param = useParams();
+interface ITodayDiv {
+  curPageState: number;
+  setCurPageState: React.Dispatch<React.SetStateAction<number>>;
+}
 
-  const [hourState, setHourState] = useState(0);
-  const [minuteState, setMinuteState] = useState(0);
+export const TodayDiv = ({ curPageState, setCurPageState }: ITodayDiv) => {
+  const nav = useNavigate();
+  const { page } = useParams<{ page: string }>();
+
   const [submitState, setSubmitState] = useState(false); // 제출할 때 비동기적으로 처리됨을 해결
 
   const { onCreate } = useDaysDispatchContext();
   const {
+    setCurDiaryState,
     onCreateDiary,
-    onToggleExerciseCheck,
+    onUpdateExerciseCheck,
+    onUpdateSmokingCheck,
     onUpdateStudyTimeCheck,
-    onToggleSmokingCheck,
+    onInitCheck,
+    onInitDiary,
   } = useDiariesDispatchStateContext();
-  const { diaryData, checkData } = useDiariesStateContext();
-
-  const [curDiaryState, setCurDiaryState] = useState<string>("");
+  const { diaryData, checkData, curDiaryState } = useDiariesStateContext();
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -35,28 +38,21 @@ export const TodayDiv = () => {
     }
   };
 
-  const onChangeHourInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setHourState(Number(e.target.value));
-    onUpdateStudyTimeCheck(setHourMinute(hourState, minuteState));
-  };
-  const onChangeMinuteInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMinuteState(Number(e.target.value));
-    onUpdateStudyTimeCheck(setHourMinute(hourState, minuteState));
-  };
-
   const onChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     // 다음페이지로 넘어가야할 때
     if (e.target.scrollHeight > 609) {
-      onCreateDiary({ page: Number(param.page), diary: curDiaryState });
-      console.log({ diaryData });
-      nav(`/TODAY/${Number(param.page) + 1}`);
+      onCreateDiary({ page: Number(page), diary: curDiaryState });
+
+      const newPage = curPageState + 1;
+      setCurPageState(newPage);
+      nav(`/TODAY/${newPage}`);
     } else {
       setCurDiaryState(e.target.value);
     }
   };
 
   const onClickSubmit = () => {
-    onCreateDiary({ page: Number(param.page), diary: curDiaryState });
+    onCreateDiary({ page: Number(page), diary: curDiaryState });
     setSubmitState(true);
   };
 
@@ -77,22 +73,29 @@ export const TodayDiv = () => {
         };
 
         onCreate(newDay);
-        // nav("/DIARY/1", { replace: true });
+
+        onInitCheck();
+        onInitDiary();
         setSubmitState(false);
+        nav("/", { replace: true });
       }
     }
   }, [
-    submitState, // <--
+    submitState, // <--제출될 때
     onCreate,
     checkData,
     diaryData,
+    nav,
+    onInitCheck,
+    onInitDiary,
   ]);
 
   useEffect(() => {
-    setCurDiaryState(diaryData[Number(param.page) - 1].diary);
+    setCurDiaryState(diaryData[Number(page) - 1].diary);
   }, [
-    param.page, // <- 처음 랜더링 될 때
+    page, // <- 처음 랜더링 될 때
     diaryData,
+    setCurDiaryState,
   ]);
 
   useEffect(() => {
@@ -100,6 +103,11 @@ export const TodayDiv = () => {
   }, [
     curDiaryState, // <- 입력이 될 때 마다
   ]);
+
+  // 페이지가 값이 바뀔 떄마다
+  useEffect(() => {
+    setCurPageState(Number(page));
+  }, [page, setCurPageState]);
 
   return (
     <div className="diaryDiv">
@@ -110,7 +118,7 @@ export const TodayDiv = () => {
         <div>체크리스트</div>
         <div></div>
         <div></div>
-        <div>일기 {param.page}</div>
+        <div>일기 {page}</div>
         <div></div>
         <div></div>
         <div></div>
@@ -150,18 +158,28 @@ export const TodayDiv = () => {
           <div className="time">
             <input
               type="number"
-              value={hourState}
+              value={checkData.studyTime.hour}
               min={0}
               max={24}
-              onChange={onChangeHourInput}
+              onChange={(e) => {
+                onUpdateStudyTimeCheck({
+                  hour: Number(e.target.value),
+                  minute: checkData.studyTime.minute,
+                });
+              }}
             />
             시간
             <input
               type="number"
               min={0}
               max={60}
-              value={minuteState}
-              onChange={onChangeMinuteInput}
+              value={checkData.studyTime.minute}
+              onChange={(e) => {
+                onUpdateStudyTimeCheck({
+                  hour: checkData.studyTime.hour,
+                  minute: Number(e.target.value),
+                });
+              }}
             />
             분
           </div>
@@ -169,16 +187,20 @@ export const TodayDiv = () => {
             <input
               name="exercise"
               type="checkbox"
-              // checked={exerciseState}
-              onChange={onToggleExerciseCheck}
+              checked={checkData.exercise}
+              onChange={() => {
+                onUpdateExerciseCheck(!checkData.exercise);
+              }}
             />
           </div>
           <div>
             <input
               name="smoking"
               type="checkbox"
-              // checked={smokingState}
-              onChange={onToggleSmokingCheck}
+              checked={checkData.smoking}
+              onChange={() => {
+                onUpdateSmokingCheck(!checkData.smoking);
+              }}
             />
           </div>
         </div>

@@ -9,7 +9,11 @@ export function getDate() {
   return curDate;
 }
 
+export function getDateKorea() {
+  const curDate = `${year}년 ${month}월 ${day}일`;
+  return curDate;
+}
+
 export function setHourMinute(hour: number, minute: number) {
-  const time = new Date(hour * 60 * 60 * 1000 + minute * 60 * 1000);
-  return time;
+  return { hour, minute };
 }
