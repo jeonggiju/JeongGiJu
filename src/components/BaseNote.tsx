@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 import "./css/BaseNote.css";
 import Island from "./Island";
 import { SideButton } from "./SideButton";
@@ -20,13 +19,11 @@ export const BaseNote = ({
   onClickLeft,
   onClickRight,
 }: IProps) => {
-  const param = useParams();
-
   return (
     <div className="baseNote">
       <Island curSite={site} />
       <div className="baseNote_arrange">
-        {param.page !== "1" && (
+        {page !== "1" && (
           <SideButton side="left" text="<" onClick={onClickLeft} />
         )}
         <div className="note">
@@ -41,7 +38,7 @@ export const BaseNote = ({
           <div className="note_component">{children}</div>
           <div className="note_footer">Gi Ju Jeong</div>
         </div>
-        {param.page !== "9" && (
+        {!(site === "TODAY" && page === "9") && (
           <SideButton side="right" text=">" onClick={onClickRight} />
         )}
       </div>

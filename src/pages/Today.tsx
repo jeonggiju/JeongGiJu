@@ -3,7 +3,7 @@ import BaseNote from "../components/BaseNote";
 import { TodayDiv } from "../components/TodayDiv";
 import { useEffect, useState } from "react";
 import TodayOther from "../components/TodayOther";
-import { getDateKorea } from "../utils/date";
+import { getTodayDateKorea } from "../utils/date";
 import { useDiariesDispatchStateContext } from "../hook/useDiariesDispatchStateContext";
 import { useDiariesStateContext } from "../hook/useDiariesStateContext";
 
@@ -11,7 +11,7 @@ export const Today = () => {
   const nav = useNavigate();
   const { page } = useParams<{ page: string }>();
   const [curPageState, setCurPageState] = useState<number>(Number(page));
-  const today = getDateKorea();
+  const today = getTodayDateKorea();
   const { onCreateDiary } = useDiariesDispatchStateContext();
   const { curDiaryState } = useDiariesStateContext();
 

@@ -50,12 +50,12 @@ export const TodayOther = ({ curPageState, setCurPageState }: ITodayOther) => {
   };
 
   // 처음 랜더링 될떄 textArea에 focus
-  // useEffect(() => {
-  //   if (textAreaRef.current) {
-  //     textAreaRef.current.focus();
-  //   }
-  // }, []);
-  //
+  useEffect(() => {
+    if (textAreaRef.current) {
+      textAreaRef.current.focus();
+    }
+  }, []);
+
   // 처음 랜더링 될 때 화면에 작성 내용 갱신
   useEffect(() => {
     setCurDiaryState(diaryData[Number(page) - 1].diary);

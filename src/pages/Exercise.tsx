@@ -1,11 +1,35 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import BaseNote from "../components/BaseNote";
+import { useState } from "react";
+import CheckLines from "../components/CheckLines";
 
 export const Exercise = () => {
-  const param = useParams();
+  const { page } = useParams<{ page: string }>();
+  const nav = useNavigate();
+  const [curPageState, setCurPageState] = useState<number>(Number(page));
+
+  const onClickLeft = () => {
+    const newPage = curPageState - 1;
+    setCurPageState(newPage);
+    nav(`/EXERCISE/${newPage}`);
+  };
+
+  const onClickRight = () => {
+    const newPage = curPageState + 1;
+    setCurPageState(newPage);
+    nav(`/EXERCISE/${newPage}`);
+  };
+
   return (
     <div>
-      <BaseNote page={param.page} site="EXERCISE"></BaseNote>
+      <BaseNote
+        page={page!}
+        site="EXERCISE"
+        onClickLeft={onClickLeft}
+        onClickRight={onClickRight}
+      >
+        <CheckLines type="EXERCISE" />
+      </BaseNote>
     </div>
   );
 };

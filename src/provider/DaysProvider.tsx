@@ -28,7 +28,7 @@ function reducer(state: Day[], action: Action): Day[] {
 
   switch (action.type) {
     case "CREATE":
-      nextState = [action.data, ...state];
+      nextState = [...state, action.data];
       break;
     case "UPDATE":
       nextState = state.map((item) =>

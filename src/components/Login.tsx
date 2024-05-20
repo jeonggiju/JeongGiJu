@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 import "./css/login.css";
-import { getDate } from "../utils/date";
+import { getTodayDate } from "../utils/date";
 
 interface IProps {
   setLogin: (isLogin: boolean) => void;
@@ -33,7 +33,7 @@ export const LoginTrue = (props: IProps) => {
 
   return (
     <div className="loginTrue">
-      <div className="today">{getDate()}</div>
+      <div className="today">{getTodayDate()}</div>
       <hr />
       <div className="buttonBox">
         <Button text="로그아웃" onClick={onClick} />

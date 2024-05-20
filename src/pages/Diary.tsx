@@ -1,11 +1,35 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import BaseNote from "../components/BaseNote";
+import { useState } from "react";
+import CheckLines from "../components/CheckLines";
 
 export const Diary = () => {
-  const param = useParams();
+  const { page } = useParams<{ page: string }>();
+  const nav = useNavigate();
+  const [curPageState, setCurPageState] = useState<number>(Number(page));
+
+  const onClickLeft = () => {
+    const newPage = curPageState - 1;
+    setCurPageState(newPage);
+    nav(`/DIARY/${newPage}`);
+  };
+
+  const onClickRight = () => {
+    const newPage = curPageState + 1;
+    setCurPageState(newPage);
+    nav(`/DIARY/${newPage}`);
+  };
+
   return (
     <div>
-      <BaseNote page={param.page} site="DIARY"></BaseNote>
+      <BaseNote
+        page={page!}
+        site="TODAY"
+        onClickLeft={onClickLeft}
+        onClickRight={onClickRight}
+      >
+        <CheckLines type="SMOKING"></CheckLines>
+      </BaseNote>
     </div>
   );
 };
