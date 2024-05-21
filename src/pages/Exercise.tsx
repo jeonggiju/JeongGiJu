@@ -28,7 +28,7 @@ export const Exercise = () => {
         onClickLeft={onClickLeft}
         onClickRight={onClickRight}
       >
-        <CheckLines type="EXERCISE" />
+        <CheckLines type="EXERCISE" page={curPageState} />
       </BaseNote>
     </div>
   );

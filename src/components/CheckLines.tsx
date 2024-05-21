@@ -1,17 +1,27 @@
 import { useDaysStateContext } from "../hook/useDaysStateContext";
 import { getDateMonthDay, getTime } from "../utils/date";
 import "./css/CheckLines.css";
-import Element from "./Element";
+import { CheckElement } from "./CheckElement";
+import { useEffect, useState } from "react";
+import { Day } from "../provider/DaysProvider";
 
 interface IProps {
   type: string;
+  page: number;
 }
 
-export const CheckLines = ({ type }: IProps) => {
-  console.log(type);
+const ELEMENTS_PER_PAGE = 130;
 
+export const CheckLines = ({ type, page }: IProps) => {
   const data = useDaysStateContext();
-  console.log(data);
+  const [dataOfPage, setDataOfPage] = useState<Day[]>([]);
+
+  useEffect(() => {
+    setDataOfPage([]);
+    const startIdx = (page - 1) * ELEMENTS_PER_PAGE;
+    const endIdx = startIdx + ELEMENTS_PER_PAGE;
+    setDataOfPage(data.slice(startIdx, endIdx));
+  }, [page, data]);
 
   return (
     <div className="checkLines">
@@ -80,12 +90,13 @@ export const CheckLines = ({ type }: IProps) => {
         <div className="checkLines_bold"></div>
       </div>
 
+      {/* 130개 들어감 */}
       <div className="rightContent">
-        {data.map((el) => {
+        {dataOfPage.map((el) => {
           switch (type) {
             case "SMOKING":
               return (
-                <Element
+                <CheckElement
                   key={el.id}
                   check={el.smoking}
                   date={getDateMonthDay(el.createdAt)}
@@ -93,7 +104,7 @@ export const CheckLines = ({ type }: IProps) => {
               );
             case "EXERCISE":
               return (
-                <Element
+                <CheckElement
                   key={el.id}
                   check={el.exercise}
                   date={getDateMonthDay(el.createdAt)}
@@ -101,17 +112,16 @@ export const CheckLines = ({ type }: IProps) => {
               );
             case "STUDY":
               return (
-                <Element
+                <CheckElement
                   key={el.id}
                   time={getTime(el.studyTime)}
                   date={getDateMonthDay(el.createdAt)}
                 />
               );
+            default:
+              return null;
           }
         })}
-        {/* <Element check={false} date="05/24" />
-        <Element time="05:12" date="5/24" />
-        <Element check={true} date="5/24" /> */}
       </div>
     </div>
   );

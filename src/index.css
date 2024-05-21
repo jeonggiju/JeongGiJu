@@ -1,10 +1,10 @@
-@font-face {
+/* @font-face {
   font-family: "NotoSansKR-VariableFont_wght";
   src: url("/NotoSansKR-VariableFont_wght.ttf");
 }
 
 * {
-  /* user-select: none; */
+  user-select: none;
 }
 
 html,
@@ -21,4 +21,4 @@ body {
 
 body * {
   font-family: "NotoSansKR-VariableFont_wght";
-}
+} */

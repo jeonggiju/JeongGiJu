@@ -1,4 +1,4 @@
-import "./css/Element.css";
+import "./css/CheckElement.css";
 
 interface IProps {
   date: string;
@@ -6,7 +6,13 @@ interface IProps {
   time?: string;
 }
 
-export const Element = (props: IProps) => {
+export const CheckElement = (props: IProps) => {
+  // useEffect(() => {
+  //   return () => {
+  //     null;
+  //   };
+  // });
+
   const getContent = () => {
     if (props.time)
       return (

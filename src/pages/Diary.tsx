@@ -24,11 +24,11 @@ export const Diary = () => {
     <div>
       <BaseNote
         page={page!}
-        site="TODAY"
+        site="DIARY"
         onClickLeft={onClickLeft}
         onClickRight={onClickRight}
       >
-        <CheckLines type="SMOKING"></CheckLines>
+        <CheckLines type="DIARY"></CheckLines>
       </BaseNote>
     </div>
   );

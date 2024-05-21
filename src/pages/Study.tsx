@@ -28,7 +28,7 @@ export const Study = () => {
         onClickLeft={onClickLeft}
         onClickRight={onClickRight}
       >
-        <CheckLines type="STUDY" />
+        <CheckLines type="STUDY" page={curPageState} />
       </BaseNote>
     </div>
   );

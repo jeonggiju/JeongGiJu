@@ -28,7 +28,7 @@ export const Smoking = () => {
         onClickLeft={onClickLeft}
         onClickRight={onClickRight}
       >
-        <CheckLines type="SMOKING"></CheckLines>
+        <CheckLines type="SMOKING" page={curPageState} />
       </BaseNote>
     </div>
   );
