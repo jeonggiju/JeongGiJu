@@ -1,0 +1,18 @@
+.textElement {
+  outline: 1px solid rebeccapurple;
+  width: 27.6rem;
+}
+
+.textElement_header {
+  padding-left: 0.64375rem;
+  font-weight: 800;
+}
+
+.textElement_content {
+  padding-left: 1.34375rem;
+  overflow-wrap: break-word; /* Ensure long words break to fit the container */
+}
+
+.textElement_interval {
+  visibility: hidden;
+}

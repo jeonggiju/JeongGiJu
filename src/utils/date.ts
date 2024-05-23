@@ -4,6 +4,12 @@ const year = currentDate.getFullYear(); // 연도
 const month = currentDate.getMonth() + 1; // 월 (0부터 시작하므로 1을 더해줍니다.)
 const day = currentDate.getDate(); // 일
 
+export function dateToString(date: Date) {
+  const year = date.getFullYear(); // 연도
+  const month = date.getMonth() + 1; // 월 (0부터 시작하므로 1을 더해줍니다.)
+  const day = date.getDate(); // 일
+  return `${year}-${month}-${day}`;
+}
 export function getTodayDate() {
   const curDate = `${year}-${month}-${day}`;
   return curDate;
@@ -19,7 +25,7 @@ export function setHourMinute(hour: number, minute: number) {
 }
 
 export function getDateMonthDay(date: Date): string {
-  const data = `${date.getMonth()}/${date.getDate()}`;
+  const data = `${date.getMonth() + 1}/${date.getDate()}`;
   return data;
 }
 

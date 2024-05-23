@@ -6,7 +6,8 @@ interface IProps {
   children: React.ReactNode;
   site: string;
   page: string;
-  today?: string;
+  today?: string; // today에서
+  nextButtonState?: boolean; //diary에서
   onClickRight: () => void;
   onClickLeft: () => void;
 }
@@ -16,6 +17,7 @@ export const BaseNote = ({
   page,
   children,
   today,
+  nextButtonState = true,
   onClickLeft,
   onClickRight,
 }: IProps) => {
@@ -23,22 +25,24 @@ export const BaseNote = ({
     <div className="baseNote">
       <Island curSite={site} />
       <div className="baseNote_arrange">
-        {page !== "1" && (
+        {(page !== "1" || site === "DIARY") && (
           <SideButton side="left" text="<" onClick={onClickLeft} />
         )}
         <div className="note">
           <div className="note_header">
-            <span className="note_header_left">{site}</span>
+            <span className="note_header_left">
+              {site === "DIARYCHECK" ? "DIARY" : site}
+            </span>
             <div className="note_header_right">
               <div>NO. {page}</div>
               <div className="note_header_line"></div>
               {today ? <div>{today}</div> : <div>year month day</div>}
             </div>
           </div>
-          <div className="note_component">{children}</div>
+          <div>{children}</div>
           <div className="note_footer">Gi Ju Jeong</div>
         </div>
-        {!(site === "TODAY" && page === "9") && (
+        {!(site === "TODAY" && page === "9") && nextButtonState && (
           <SideButton side="right" text=">" onClick={onClickRight} />
         )}
       </div>

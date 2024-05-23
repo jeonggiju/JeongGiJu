@@ -13,13 +13,17 @@ export const Island = (props: IProp) => {
     { site: "TODAY", path: "/TODAY/1" },
     { site: "SMOKING", path: "/SMOKING/1" },
     { site: "EXERCISE", path: "/EXERCISE/1" },
-    { site: "DIARY", path: "/DIARY/1" },
+    { site: "DIARYCHECK", path: "/DIARYCHECK/1" },
     { site: "STUDY", path: "/STUDY/1" },
     { site: "LOGIN", path: "/" },
   ];
-  const [curIdx, setCurIdx] = useState(
-    sites.findIndex((item) => item.site === props.curSite)
-  );
+
+  const initialIndex =
+    props.curSite === "DIARY"
+      ? sites.findIndex((item) => item.site === "DIARYCHECK")
+      : sites.findIndex((item) => item.site === props.curSite);
+
+  const [curIdx, setCurIdx] = useState(initialIndex);
 
   const onClickIslandLeft = () => {
     setCurIdx((prevIdx) => (prevIdx - 1 + sites.length) % sites.length);
@@ -35,9 +39,12 @@ export const Island = (props: IProp) => {
 
   return (
     <div className="island">
-      <div className="island_left" onClick={onClickIslandLeft}></div>
-      <span className="text" onDoubleClick={onClickText}>
-        {sites[curIdx].site}
+      <div className={`island_left`} onClick={onClickIslandLeft}></div>
+      <span
+        className={`text text_${sites[curIdx].site}`}
+        onDoubleClick={onClickText}
+      >
+        {sites[curIdx].site === "DIARYCHECK" ? "DIARY" : sites[curIdx].site}
       </span>
       <div className="island_right" onClick={onClickIslandRight}></div>
     </div>

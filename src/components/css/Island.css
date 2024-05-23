@@ -38,6 +38,7 @@
 .text {
   user-select: none;
 }
+
 .text:hover {
   font-size: 1.2375rem;
   cursor: pointer;

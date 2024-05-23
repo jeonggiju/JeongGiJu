@@ -9,21 +9,26 @@ import NotFound from "./pages/NotFound.tsx";
 import Study from "./pages/Study.tsx";
 import { DaysProvider } from "./provider/DaysProvider.tsx";
 import { DiariesProvider } from "./provider/DiariesProvider.tsx";
+import { DiaryCheck } from "./pages/DiaryCheck.tsx";
+import { DayProvider } from "./provider/DayProvider.tsx";
 
 function App() {
   return (
     <>
       <DaysProvider>
         <DiariesProvider>
-          <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/DIARY/:page" element={<Diary />}></Route>
-            <Route path="/EXERCISE/:page" element={<Exercise />}></Route>
-            <Route path="/TODAY/:page" element={<Today />}></Route>
-            <Route path="/SMOKING/:page" element={<Smoking />}></Route>
-            <Route path="/STUDY/:page" element={<Study />}></Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <DayProvider>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/DIARY/:page" element={<Diary />} />
+              <Route path="/DIARYCHECK/:page" element={<DiaryCheck />} />
+              <Route path="/EXERCISE/:page" element={<Exercise />} />
+              <Route path="/TODAY/:page" element={<Today />} />
+              <Route path="/SMOKING/:page" element={<Smoking />} />
+              <Route path="/STUDY/:page" element={<Study />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </DayProvider>
         </DiariesProvider>
       </DaysProvider>
     </>
