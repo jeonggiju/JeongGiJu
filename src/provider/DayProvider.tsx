@@ -19,7 +19,9 @@ interface Day {
 
 interface DayDispatch {
   setDayState: Dispatch<SetStateAction<Day>>;
-  setDiaryArrayState: Dispatch<SetStateAction<string[]>>;
+  setDiaryArrayState: Dispatch<
+    SetStateAction<{ diary: string; nextButton: boolean }[]>
+  >;
 }
 
 const clickDay: Day = {
@@ -34,17 +36,28 @@ const clickDay: Day = {
 
 interface IDayStateContext {
   dayState: Day;
-  diaryArrayState: string[];
+  diaryArrayState: { diary: string; nextButton: boolean }[];
 }
 
-const baseDiary = ["", "", "", "", "", "", "", "", ""];
+const baseDiary = [
+  { diary: "", nextButton: true },
+  { diary: "", nextButton: true },
+  { diary: "", nextButton: true },
+  { diary: "", nextButton: true },
+  { diary: "", nextButton: true },
+  { diary: "", nextButton: true },
+  { diary: "", nextButton: true },
+  { diary: "", nextButton: true },
+  { diary: "", nextButton: true },
+];
 
 const DayStateContext = createContext<IDayStateContext | null>(null);
 const DayDispatchContext = createContext<DayDispatch | null>(null);
 
 const DayProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [dayState, setDayState] = useState<Day>(clickDay);
-  const [diaryArrayState, setDiaryArrayState] = useState<string[]>(baseDiary);
+  const [diaryArrayState, setDiaryArrayState] =
+    useState<{ diary: string; nextButton: boolean }[]>(baseDiary);
   return (
     <DayStateContext.Provider value={{ dayState, diaryArrayState }}>
       <DayDispatchContext.Provider value={{ setDayState, setDiaryArrayState }}>

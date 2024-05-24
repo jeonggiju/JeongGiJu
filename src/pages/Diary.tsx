@@ -19,7 +19,6 @@ export const Diary = () => {
   const { dayState, diaryArrayState } = useDayStateContext();
   const { setDiaryArrayState } = useDayDispatchContext();
   const [loading, setLoading] = useState<boolean>(true);
-  const [nextButtonState, setNextButtonState] = useState<boolean>(true);
 
   const [curPageState, setCurPageState] = useState<number>(Number(page));
 
@@ -40,7 +39,7 @@ export const Diary = () => {
   };
 
   useEffect(() => {
-    if (diaryArrayState[curPageState - 1] === "") {
+    if (diaryArrayState[curPageState - 1].diary === "") {
       const tempElement = document.createElement("div");
       Object.assign(tempElement.style, {
         position: "absolute",
@@ -64,26 +63,22 @@ export const Diary = () => {
           ++idx
         );
         textHeight = tempElement.scrollHeight;
-        // console.log(`tempElement.scrollHeight: ${textHeight}`);
       }
       tempElement.textContent = dayState.diary.slice(startIdxRef.current, idx);
-      // console.log(`tempElement.textContent: ${tempElement.textContent}`);
       startIdxRef.current = idx - 1;
 
       const tempDiaryArr = [...diaryArrayState];
-      tempDiaryArr[curPageState - 1] = tempElement.textContent;
-      setDiaryArrayState(tempDiaryArr);
-
+      tempDiaryArr[curPageState - 1].diary = tempElement.textContent;
       if (textHeight <= MAX_HEIGHT) {
-        setNextButtonState(false);
+        tempDiaryArr[curPageState - 1].nextButton = false;
       }
+      setDiaryArrayState(tempDiaryArr);
 
       document.body.removeChild(tempElement);
 
       setLoading(false);
     } else {
       setLoading(false);
-      setNextButtonState(true);
     }
   }, [dayState, curPageState, diaryArrayState, setDiaryArrayState]);
 
@@ -96,14 +91,14 @@ export const Diary = () => {
         site="DIARY"
         onClickLeft={onClickLeft}
         onClickRight={onClickRight}
-        nextButtonState={nextButtonState}
+        nextButtonState={diaryArrayState[curPageState - 1].nextButton}
       >
         {loading ? (
           <div>loading...</div>
         ) : (
           <TextLines
             date={dateToString(dayState.createdAt)}
-            diary={diaryArrayState[curPageState - 1]}
+            diary={diaryArrayState[curPageState - 1].diary}
           />
         )}
       </BaseNote>

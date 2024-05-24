@@ -77,7 +77,7 @@ export const TodayDiv = ({ curPageState, setCurPageState }: ITodayDiv) => {
         onInitCheck();
         onInitDiary();
         setSubmitState(false);
-        nav("/", { replace: true });
+        nav("/DIARYCHECK/1", { replace: true });
       }
     }
   }, [

@@ -27,12 +27,19 @@ export const CheckElement = (props: IProps) => {
       );
   };
 
+  const showDiary = () => {
+    if (props.check && props.type === "diaryCheck") {
+      props.onClick!();
+    }
+  };
+
   return (
     <div
-      className={`checkElement checkElement_${props.type}`}
-      onClick={props.onClick}
+      className={`checkElement checkElement_${props.type}_${props.check}`}
+      onClick={showDiary}
     >
       <div className="checkElement_date">{props.date}</div>
+
       {getContent()}
     </div>
   );

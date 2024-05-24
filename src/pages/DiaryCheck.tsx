@@ -11,7 +11,17 @@ export const DiaryCheck = () => {
   const { setDiaryArrayState } = useDayDispatchContext();
 
   useEffect(() => {
-    setDiaryArrayState(["", "", "", "", "", "", "", "", ""]);
+    setDiaryArrayState([
+      { diary: "", nextButton: true },
+      { diary: "", nextButton: true },
+      { diary: "", nextButton: true },
+      { diary: "", nextButton: true },
+      { diary: "", nextButton: true },
+      { diary: "", nextButton: true },
+      { diary: "", nextButton: true },
+      { diary: "", nextButton: true },
+      { diary: "", nextButton: true },
+    ]);
   }, [setDiaryArrayState]);
 
   const onClickLeft = () => {
