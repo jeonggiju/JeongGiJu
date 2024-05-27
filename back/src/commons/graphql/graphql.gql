@@ -4,10 +4,12 @@
 
 type CheckList {
   id: String!
+  diary: String!
   smoking: Boolean!
   exercise: Boolean!
   studyTime: DateTime!
   user: User!
+  createdAt: DateTime!
 }
 
 """
@@ -15,32 +17,23 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Diary {
-  id: String!
-  diary: String!
-  user: User!
-}
-
 type User {
   id: String!
   email: String!
   password: String!
   checkList: [CheckList!]
-  diary: [Diary!]
 }
 
 type Query {
   findAllUser: [User!]!
-  findAllCheckList: [CheckList!]!
-  findAllDiary: [Diary!]!
+  findAllCheckList(userId: String!): [CheckList!]!
 }
 
 type Mutation {
   login(email: String!, password: String!): String!
   restoreAccessToken: String!
   createUser(createUserInput: CreateUserInput!): User!
-  createCheckList(createCheckListInput: CreateCheckListInput!): CheckList!
-  createDiary(createDiaryInput: CreateDiaryInput!): Diary!
+  createCheckList(createCheckListInput: CreateCheckListInput!, userId: String!): CheckList!
 }
 
 input CreateUserInput {
@@ -52,8 +45,5 @@ input CreateCheckListInput {
   exercise: Boolean!
   smoking: Boolean!
   studyTime: DateTime!
-}
-
-input CreateDiaryInput {
   diary: String!
 }

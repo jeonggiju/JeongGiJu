@@ -5,15 +5,12 @@ import {
   createContext,
   useState,
 } from "react";
-import { setHourMinute } from "../utils/date";
+import { changeToDate } from "../utils/date";
 
 interface Day {
-  id: number;
-  createdAt: Date;
-  email: string;
   smoking: boolean;
   exercise: boolean;
-  studyTime: { hour: number; minute: number };
+  studyTime: Date;
   diary: string;
 }
 
@@ -25,13 +22,10 @@ interface DayDispatch {
 }
 
 const clickDay: Day = {
-  id: 0,
-  email: "",
   smoking: false,
   exercise: false,
-  studyTime: setHourMinute(0, 0),
+  studyTime: changeToDate(0, 0),
   diary: "",
-  createdAt: new Date(),
 };
 
 interface IDayStateContext {

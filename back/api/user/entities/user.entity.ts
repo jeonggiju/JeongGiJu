@@ -1,6 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { CheckList } from 'api/checkList/entities/checkList.entity';
-import { Diary } from 'api/diary/entities/diary.entity';
 import { IsNotEmpty } from 'class-validator';
 import {
   Column,
@@ -33,13 +32,6 @@ export class User {
   })
   @Field(() => [CheckList], { nullable: true })
   checkList?: CheckList[];
-
-  @OneToMany(() => Diary, (diary) => diary.user, {
-    cascade: ['insert', 'update', 'soft-remove'],
-    nullable: true,
-  })
-  @Field(() => [Diary], { nullable: true })
-  diary?: Diary[];
 
   @CreateDateColumn()
   createdAt: Date;

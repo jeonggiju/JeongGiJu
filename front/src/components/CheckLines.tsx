@@ -3,9 +3,9 @@ import { getDateMonthDay, getTime } from "../utils/date";
 import "./css/CheckLines.css";
 import { CheckElement } from "./CheckElement";
 import { useEffect, useState } from "react";
-import { Day } from "../provider/DaysProvider";
 import { useNavigate } from "react-router-dom";
 import { useDayDispatchContext } from "../hook/useDayDispatchContext";
+import { ICheckList } from "../provider/DaysProvider";
 
 interface IProps {
   type: string;
@@ -15,19 +15,22 @@ interface IProps {
 const ELEMENTS_PER_PAGE = 130;
 
 export const CheckLines = ({ type, page }: IProps) => {
-  const data = useDaysStateContext();
+  const { checkList } = useDaysStateContext();
   const { setDayState } = useDayDispatchContext();
-  const [dataOfPage, setDataOfPage] = useState<Day[]>([]);
+  const [dataOfPage, setDataOfPage] = useState<ICheckList[]>([]);
   const nav = useNavigate();
 
   useEffect(() => {
     setDataOfPage([]);
-    const startIdx = (page - 1) * ELEMENTS_PER_PAGE;
-    const endIdx = startIdx + ELEMENTS_PER_PAGE;
-    setDataOfPage(data.slice(startIdx, endIdx));
-  }, [page, data]);
+    if (typeof checkList === "undefined") return;
+    else {
+      const startIdx = (page - 1) * ELEMENTS_PER_PAGE;
+      const endIdx = startIdx + ELEMENTS_PER_PAGE;
+      setDataOfPage(checkList.slice(startIdx, endIdx));
+    }
+  }, [page, checkList]);
 
-  const onClickDiary = (el: Day) => {
+  const onClickDiary = (el: ICheckList) => {
     setDayState(el);
     nav("/DIARY/1");
   };
@@ -126,7 +129,7 @@ export const CheckLines = ({ type, page }: IProps) => {
                 <CheckElement
                   type="study"
                   key={el.id}
-                  time={getTime(el.studyTime)}
+                  time={getTime({ studyTime: el.studyTime })}
                   date={getDateMonthDay(el.createdAt)}
                 />
               );

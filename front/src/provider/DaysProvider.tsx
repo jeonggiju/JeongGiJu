@@ -1,44 +1,47 @@
-import { ReactNode, createContext, useReducer, useRef } from "react";
-import { setHourMinute } from "../utils/date";
+import { useMutation, useQuery } from "@apollo/client";
+import { ReactNode, createContext, useEffect, useReducer } from "react";
+import { CREATE_CHECKLIST_MUTATION } from "../graphql/mutations";
+import { GET_CHECKLISTS_BY_USER } from "../graphql/queries";
 
-export interface Day {
-  id: number;
+// 처음 db에 정보를 가져옴
+export interface ICheckList {
+  id: string;
   createdAt: Date;
-  email: string;
   smoking: boolean;
   exercise: boolean;
-  studyTime: { hour: number; minute: number };
+  studyTime: Date;
   diary: string;
-}
-
-interface DaysDispatch {
-  onCreate: (day: Omit<Day, "id" | "createdAt">) => void;
-  onUpdate: (day: Day) => void;
-  onDelete: (id: number) => void;
+  user: {
+    id: string;
+  };
 }
 
 interface Action {
-  data: Day;
+  data: ICheckList | ICheckList[];
   type: string;
 }
 
+interface IDaysDispatchContext {
+  onCreate: (checkList: Omit<ICheckList, "id" | "createdAt" | "user">) => void;
+
+  onInit: (checkList: ICheckList) => void;
+}
+
+interface IDaysStateContext {
+  checkList: ICheckList[];
+}
+
 // state 기존 데이터, action 받아온 데이터
-function reducer(state: Day[], action: Action): Day[] {
+function reducer(state: ICheckList[], action: Action): ICheckList[] {
   let nextState;
 
   switch (action.type) {
+    case "INIT":
+      nextState = action.data as ICheckList[];
+      break;
+
     case "CREATE":
-      nextState = [...state, action.data];
-      break;
-    case "UPDATE":
-      nextState = state.map((item) =>
-        String(item.id) === String(action.data.id) ? action.data : item
-      );
-      break;
-    case "DELETE":
-      nextState = state.filter(
-        (item) => String(item.id) !== String(action.data.id)
-      );
+      nextState = [...state, action.data as ICheckList];
       break;
 
     default:
@@ -47,1250 +50,92 @@ function reducer(state: Day[], action: Action): Day[] {
   return nextState;
 }
 
-const tempData: Day[] = [
-  {
-    id: 0,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary:
-      " 1에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다.2에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다.3에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다.4에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다.2에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다.3에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다.4에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음1 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다.",
-    createdAt: new Date("2024-04-20"),
-  },
-  {
-    id: 1,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary:
-      "에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다.2에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다.3에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다.4에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다.2에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다.3에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다.4에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다.2에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다.3에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다.4에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠을 끄시잔티는 투묙엄음 누나반다흐혀에서 상스논알, 붱험에. 놰건깥이 핬킨진앗에서 너아게 므얼 햐더너퓨의 시긱잉아는 렿생글다철뵤읠",
-    createdAt: new Date(),
-  },
-  {
-    id: 2,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "3안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 3,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "4안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 4,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "5안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 5,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "6안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 6,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "7안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 7,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "8안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 8,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "9안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 9,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "10안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 10,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "11안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 11,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "12안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 12,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "13안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 13,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "14안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 14,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "15안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 15,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "16안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 16,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "17안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 17,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "18안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 18,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "19안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 19,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "20안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 20,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "21안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 21,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "22안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 22,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "23안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 23,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "24안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 24,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "25안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 25,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "26안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 26,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "27안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 27,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "28안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 28,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "29안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 29,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "30안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 30,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "31안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 31,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "32안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 32,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "33안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 33,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "34안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 34,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "35안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 35,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "36안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 36,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "37안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 37,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "38안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 38,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "39안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 39,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "40안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 40,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "41안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 41,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "42안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 42,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "43안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 43,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "44안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 44,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "45안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 45,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "46안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 46,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "47안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 47,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "48안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 48,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "49안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 49,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "50안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 50,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "51안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 51,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "52안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 52,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "53안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 53,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "54안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 54,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "55안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 55,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "56안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 56,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "57안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 57,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "58안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 58,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "59안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 59,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "60안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 60,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "61안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 61,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "62안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 62,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "63안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 63,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "64안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 64,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "65안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 65,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "66안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 66,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "67안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 67,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "68안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 68,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "69안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 69,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "70안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 70,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "71안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 71,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "72안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 72,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "73안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 73,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "74안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 74,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "75안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 75,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "76안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 76,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "77안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 77,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "78안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 78,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "79안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 79,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "80안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 80,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "81안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 81,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "82안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 82,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "83안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 83,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "84안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 84,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "85안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 85,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "86안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 86,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "87안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 87,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "88안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 88,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "89안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 89,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "90안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 90,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "91안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 91,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "92안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 92,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "93안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 93,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "94안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 94,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "95안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 95,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "96안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 96,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "97안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 97,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "98안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 98,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "99안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 99,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "100안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 100,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "101안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 101,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "102안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 102,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "103안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 103,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "104안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 104,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "105안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 105,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "106안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 106,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "107안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 107,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "108안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 108,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "109안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 109,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "110안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 110,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "111안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 111,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "112안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 112,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "113안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 113,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "114안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 114,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "115안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 115,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "116안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 116,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "117안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 117,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "118안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 118,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "119안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 119,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "120안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 120,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "121안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 121,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "122안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 122,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "123안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 123,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "124안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 124,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "125안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 125,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "126안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 126,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "127안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 127,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "128안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 128,
-    email: "aaa@abb",
-    smoking: true,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "129안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 129,
-    email: "aaa@abb",
-    smoking: false,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "130안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 130,
-    email: "aaa@abb",
-    smoking: false,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "131안녕안녕",
-    createdAt: new Date(),
-  },
-  {
-    id: 132,
-    email: "aaa@abb",
-    smoking: false,
-    exercise: true,
-    studyTime: setHourMinute(3, 45),
-    diary: "132안녕안녕",
-    createdAt: new Date(),
-  },
-];
-
-const DaysStateContext = createContext<null | Day[]>(null);
-const DaysDispatchContext = createContext<DaysDispatch | null>(null);
+const DaysStateContext = createContext<null | IDaysStateContext>(null);
+const DaysDispatchContext = createContext<null | IDaysDispatchContext>(null);
 
 const DaysProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [data, dispatch] = useReducer<React.Reducer<Day[], Action>>(
-    reducer,
-    tempData
-  );
+  const [checkList, dispatchCheckList] = useReducer<
+    React.Reducer<ICheckList[], Action>
+  >(reducer, []);
 
-  const ref = useRef(0);
+  const [createCheckList] = useMutation(CREATE_CHECKLIST_MUTATION);
+  const { data } = useQuery(GET_CHECKLISTS_BY_USER, {
+    variables: { userId: "e9885745-1749-4bfe-bcd7-d14e19c78439" },
+  });
 
-  const onCreate = (day: Omit<Day, "id" | "createdAt">) => {
-    dispatch({
-      type: "CREATE",
-      data: {
-        id: ref.current++, //임시
-        email: day.email,
-        studyTime: day.studyTime,
-        smoking: day.smoking,
-        exercise: day.exercise,
-        diary: day.diary,
-        createdAt: new Date(),
-      },
-    });
+  useEffect(() => {
+    if (data && data.findAllCheckList) {
+      const formattedData = data.findAllCheckList.map((item: ICheckList) => ({
+        ...item,
+        createdAt: new Date(item.createdAt),
+        studyTime: new Date(item.studyTime),
+        user: {
+          id: item.user.id,
+        },
+      }));
+      dispatchCheckList({
+        type: "INIT",
+        data: formattedData,
+      });
+    }
+  }, [data]);
+
+  const onCreate = async (
+    checkList: Pick<ICheckList, "diary" | "exercise" | "smoking" | "studyTime">
+  ) => {
+    try {
+      const response = await createCheckList({
+        variables: {
+          createCheckListInput: {
+            exercise: checkList.exercise,
+            studyTime: new Date(checkList.studyTime).toISOString(),
+            diary: checkList.diary,
+            smoking: checkList.smoking,
+          },
+          userId: "e9885745-1749-4bfe-bcd7-d14e19c78439",
+        },
+      });
+
+      if (response.data) {
+        dispatchCheckList({
+          type: "CREATE",
+          data: {
+            id: response.data.createCheckList.id,
+            createdAt: new Date(response.data.createCheckList.createdAt),
+            studyTime: new Date(response.data.createCheckList.studyTime),
+            smoking: response.data.createCheckList.smoking,
+            exercise: response.data.createCheckList.exercise,
+            diary: response.data.createCheckList.diary,
+            user: { id: response.data.createCheckList.user.id },
+          },
+        });
+      }
+    } catch (e) {
+      alert("서버 연결 오류");
+      console.log(e);
+    }
   };
 
-  const onUpdate = (day: Day) => {
-    dispatch({
-      type: "UPDATE",
+  const onInit = async (checkList: ICheckList) => {
+    dispatchCheckList({
+      type: "INIT",
       data: {
-        id: day.id,
-        email: day.email,
-        studyTime: day.studyTime,
-        smoking: day.smoking,
-        exercise: day.exercise,
-        diary: day.diary,
-        createdAt: day.createdAt,
+        id: checkList.id,
+        createdAt: new Date(checkList.createdAt),
+        studyTime: new Date(checkList.studyTime),
+        smoking: checkList.smoking,
+        exercise: checkList.exercise,
+        diary: checkList.diary,
+        user: {
+          id: checkList.user.id,
+        },
       },
-    });
-  };
-
-  const onDelete = (id: number) => {
-    dispatch({
-      type: "DELETE",
-      data: { id } as Day,
     });
   };
 
   return (
-    <DaysStateContext.Provider value={data}>
-      <DaysDispatchContext.Provider value={{ onCreate, onDelete, onUpdate }}>
+    <DaysStateContext.Provider value={{ checkList }}>
+      <DaysDispatchContext.Provider value={{ onCreate, onInit }}>
         {children}
       </DaysDispatchContext.Provider>
     </DaysStateContext.Provider>

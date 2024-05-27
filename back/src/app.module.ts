@@ -6,8 +6,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'api/auth/auth.module';
 import { CheckListModule } from 'api/checkList/checkList.module';
 import { CheckList } from 'api/checkList/entities/checkList.entity';
-import { DiaryModule } from 'api/diary/diary.module';
-import { Diary } from 'api/diary/entities/diary.entity';
 import { User } from 'api/user/entities/user.entity';
 import { UserModule } from 'api/user/user.module';
 
@@ -22,7 +20,6 @@ import { UserModule } from 'api/user/user.module';
     ConfigModule.forRoot(),
     UserModule,
     CheckListModule,
-    DiaryModule,
     TypeOrmModule.forRoot({
       type: process.env.DATABASE_TYPE as 'mysql',
       host: process.env.DATABASE_HOST,
@@ -30,7 +27,7 @@ import { UserModule } from 'api/user/user.module';
       username: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_DATABASE,
-      entities: [User, CheckList, Diary],
+      entities: [User, CheckList],
       logging: true,
       synchronize: true,
     }),

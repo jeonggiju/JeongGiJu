@@ -10,4 +10,7 @@ export class CreateCheckListInput {
 
   @Field(() => Date)
   studyTime: Date;
+
+  @Field(() => String)
+  diary: string;
 }

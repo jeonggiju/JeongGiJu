@@ -32,6 +32,7 @@
 }
 
 .checkLines_right {
+  /* outline: 1px solid red; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -60,8 +61,11 @@
 }
 
 .checkLines_rightContent {
-  /* border: 0.0625rem solid green; */
+  /* outline: 1px solid red; */
+  flex-wrap: wrap;
   display: flex;
+  align-content: baseline;
+  /* align-items: ; */
   box-sizing: border-box;
   position: absolute;
   height: 40.7rem;
@@ -71,6 +75,6 @@
   padding-top: 0.1rem;
   padding-left: 0.84375rem;
   padding-right: 0.5625rem;
-  flex-wrap: wrap;
   column-gap: 0.16875rem;
+  row-gap: 0.139rem;
 }

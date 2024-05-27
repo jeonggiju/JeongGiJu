@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDiariesDispatchStateContext } from "../hook/useDiariesDispatchStateContext";
 import { useDiariesStateContext } from "../hook/useDiariesStateContext";
 import { useDaysDispatchContext } from "../hook/useDaysDispatchContext";
+import { changeToDate } from "../utils/date";
 
 interface ITodayOther {
   curPageState: number;
@@ -76,8 +77,10 @@ export const TodayOther = ({ curPageState, setCurPageState }: ITodayOther) => {
       const result = window.confirm("오늘 일기를 다 쓰셨나요?");
       if (result) {
         const newDay = {
-          email: "111@344",
-          studyTime: checkData.studyTime,
+          studyTime: changeToDate(
+            checkData.studyTime.hour,
+            checkData.studyTime.minute
+          ),
           smoking: checkData.smoking,
           exercise: checkData.exercise,
           diary: diaryData
@@ -92,7 +95,7 @@ export const TodayOther = ({ curPageState, setCurPageState }: ITodayOther) => {
         onInitCheck();
         onInitDiary();
         setSubmitState(false);
-        nav("/", { replace: true });
+        nav("/DIARYCHECK/1", { replace: true });
       }
     }
   }, [

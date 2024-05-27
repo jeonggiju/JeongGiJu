@@ -8,6 +8,11 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new HttpExceptionFilter());
 
+  app.enableCors({
+    origin: 'http://localhost:5173', // 프론트엔드가 동작하는 주소
+    credentials: true,
+  });
+
   await app.listen(3000);
 }
 bootstrap();

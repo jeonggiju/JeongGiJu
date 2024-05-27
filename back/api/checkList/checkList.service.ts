@@ -36,8 +36,15 @@ export class CheckListService {
     });
   }
 
-  findAll(): Promise<CheckList[]> {
-    return this.checkListRepository.find();
+  findAll({ userId }): Promise<CheckList[]> {
+    return this.checkListRepository.find({
+      where: {
+        user: {
+          id: userId,
+        },
+      },
+      relations: ['user'],
+    });
   }
 
   async create({

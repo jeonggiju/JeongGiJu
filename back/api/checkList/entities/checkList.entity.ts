@@ -15,6 +15,10 @@ export class CheckList {
   @Field(() => String)
   id: string;
 
+  @Column('longtext')
+  @Field(() => String)
+  diary: string;
+
   @Column()
   @Field(() => Boolean)
   smoking: boolean;
@@ -32,5 +36,6 @@ export class CheckList {
   user: User;
 
   @CreateDateColumn()
+  @Field(() => Date)
   createdAt: Date;
 }

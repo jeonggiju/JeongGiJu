@@ -20,6 +20,11 @@ export function getTodayDateKorea() {
   return curDate;
 }
 
+export function changeToDate(hour: number, minute: number): Date {
+  const date = new Date(1970, 0, 1, hour, minute, 0, 0); // 1970년 1월 1일을 기준으로 시간만 설정
+  return date;
+}
+
 export function setHourMinute(hour: number, minute: number) {
   return { hour, minute };
 }
@@ -29,13 +34,9 @@ export function getDateMonthDay(date: Date): string {
   return data;
 }
 
-export function getTime({
-  hour,
-  minute,
-}: {
-  hour: number;
-  minute: number;
-}): string {
+export function getTime({ studyTime }: { studyTime: Date }): string {
+  const hour = studyTime.getHours();
+  const minute = studyTime.getMinutes();
   const data = `${String(hour).padStart(2, "0")}:${String(minute).padStart(
     2,
     "0"

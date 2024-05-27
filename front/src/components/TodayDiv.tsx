@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDaysDispatchContext } from "../hook/useDaysDispatchContext";
 import { useDiariesDispatchStateContext } from "../hook/useDiariesDispatchStateContext";
 import { useDiariesStateContext } from "../hook/useDiariesStateContext";
+import { changeToDate } from "../utils/date";
 
 interface ITodayDiv {
   curPageState: number;
@@ -61,8 +62,10 @@ export const TodayDiv = ({ curPageState, setCurPageState }: ITodayDiv) => {
       const result = window.confirm("오늘 일기를 다 쓰셨나요?");
       if (result) {
         const newDay = {
-          email: "111@344",
-          studyTime: checkData.studyTime,
+          studyTime: changeToDate(
+            checkData.studyTime.hour,
+            checkData.studyTime.minute
+          ),
           smoking: checkData.smoking,
           exercise: checkData.exercise,
           diary: diaryData
