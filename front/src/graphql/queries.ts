@@ -6,9 +6,13 @@ export const GET_CHECKLISTS_BY_USER = gql`
       id
       createdAt
       smoking
-      exercise
+      anaerobic
+      cardio
       studyTime
+      wakeTime
+      sleepTime
       diary
+      weight
       user {
         id
       }

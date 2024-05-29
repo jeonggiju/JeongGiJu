@@ -53,41 +53,54 @@
   border-bottom: 0.05625rem dashed gray;
 }
 
-.right_one > * {
+.right_checkHeader > * {
   width: 8.4375rem;
   /* border: 0.0625rem solid rebeccapurple; */
   text-align: center;
 }
 
-.right_two > * {
-  width: 8.4375rem;
-  /* border: 0.0625rem solid red; */
+.right_checkHeader_time {
   display: flex;
-  justify-content: center;
+  padding-left: 2rem;
+  /* outline: 1px solid black; */
+  justify-content: space-between;
 }
 
-.right_one {
+.right_checkHeader {
   display: flex;
   justify-content: space-evenly;
   font-weight: 800;
 }
-.right_two {
-  display: flex;
-  justify-content: space-evenly;
+
+.right_checkHeader_time .wakeTime {
+  margin-left: 0.35rem;
+}
+
+.right_checkHeader_time .sleepTime {
+  margin-left: 0.15rem;
+}
+
+.right_checkHeader_time .studyTime {
+  margin-left: 0.15rem;
 }
 
 .time {
+  width: 8.4375rem;
   display: flex;
+  /* outline: 1px solid red; */
+  justify-content: center;
+  font-size: 0.85rem;
+
   /* padding-top: 0.125rem; */
 }
 
 .time > input {
   border: none;
-  border-bottom: 0.05625rem solid black;
+  border-bottom: 0.05625rem solid gray;
   /* background-color: red; */
   height: 1.0125rem;
   width: 2rem;
-  font-size: 0.9rem;
+  font-size: 0.84375rem;
   margin-left: 0.5625rem;
   margin-top: 0.1125rem;
 }
@@ -95,6 +108,41 @@
 .time > input:focus {
   border-bottom: 0.05625rem solid black;
   outline: none;
+}
+
+.right_checkbox .checkbox {
+  width: 2rem;
+  cursor: pointer;
+}
+
+.right_checkbox_weight > input {
+  width: 2.25rem;
+  border: none;
+  border-bottom: 0.05625rem solid gray;
+  height: 1.2125rem;
+}
+
+.right_checkbox_weight {
+  font-size: 0.8rem;
+}
+
+.right_checkbox_weight > input:focus {
+  outline: none;
+  border-bottom: 0.05625rem solid black;
+}
+
+.right_checkbox {
+  display: flex;
+  justify-content: space-around;
+
+  /* outline: 1px solid red; */
+  /* width: 5rem; */
+}
+
+.right_checkbox > div {
+  width: 4rem;
+  display: flex;
+  justify-content: center;
 }
 
 .diaryDiv > .note_lines_cross {
@@ -109,8 +157,9 @@
 .note_right .firstTextArea {
   position: absolute;
   width: calc(100% - 1.125rem);
+
   /* height: 37.85625rem; */
-  top: 6.23225rem;
+  top: 9.28rem;
   left: 0.5625rem;
   background-color: rgba(255, 255, 255, 0);
   resize: none;
@@ -118,7 +167,7 @@
   overflow: hidden;
   border: none;
   font-size: 0.84375rem;
-  line-height: 1.85em;
+  line-height: 1.8555em;
   font-weight: 500;
   /* outline: auto; */
 }

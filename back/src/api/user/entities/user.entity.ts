@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { CheckList } from 'api/checkList/entities/checkList.entity';
+import { CheckList } from 'src/api/checkList/entities/checkList.entity';
 import { IsNotEmpty } from 'class-validator';
 import {
   Column,

@@ -22,9 +22,17 @@ export const TodayDiv = ({ curPageState, setCurPageState }: ITodayDiv) => {
   const {
     setCurDiaryState,
     onCreateDiary,
-    onUpdateExerciseCheck,
+
+    onUpdateWakeTime,
+    onUpdateStudyTime,
+    onUpdateSleepTime,
+
+    onUpdateCardioCheck,
+    onUpdateAnaerobicCheck,
     onUpdateSmokingCheck,
-    onUpdateStudyTimeCheck,
+
+    onUpdateWeight,
+
     onInitCheck,
     onInitDiary,
   } = useDiariesDispatchStateContext();
@@ -32,6 +40,7 @@ export const TodayDiv = ({ curPageState, setCurPageState }: ITodayDiv) => {
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
+  // 높이 조절
   const adjustTextAreaHeight = () => {
     if (textAreaRef.current) {
       textAreaRef.current.style.height = "auto";
@@ -39,9 +48,11 @@ export const TodayDiv = ({ curPageState, setCurPageState }: ITodayDiv) => {
     }
   };
 
+  // 자동으로 페이지 넘김
   const onChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     // 다음페이지로 넘어가야할 때
-    if (e.target.scrollHeight > 609) {
+    console.log(e.target.scrollHeight);
+    if (e.target.scrollHeight > 559) {
       onCreateDiary({ page: Number(page), diary: curDiaryState });
 
       const newPage = curPageState + 1;
@@ -54,20 +65,40 @@ export const TodayDiv = ({ curPageState, setCurPageState }: ITodayDiv) => {
 
   const onClickSubmit = () => {
     onCreateDiary({ page: Number(page), diary: curDiaryState });
+    console.log(curDiaryState);
     setSubmitState(true);
   };
 
   useEffect(() => {
     if (submitState) {
-      const result = window.confirm("오늘 일기를 다 쓰셨나요?");
-      if (result) {
+      if (window.confirm("오늘 일기를 다 쓰셨나요?")) {
+        const parsedWeight = parseFloat(checkData.weight);
+        if (isNaN(parsedWeight)) {
+          alert("잘못된 값입니다. 다시 확인해주세요");
+          setSubmitState(false);
+          return;
+        }
+
         const newDay = {
+          wakeTime: changeToDate(
+            checkData.wakeTime.hour,
+            checkData.wakeTime.minute
+          ),
+          sleepTime: changeToDate(
+            checkData.sleepTime.hour,
+            checkData.sleepTime.minute
+          ),
+
           studyTime: changeToDate(
             checkData.studyTime.hour,
             checkData.studyTime.minute
           ),
+
+          anaerobic: checkData.anaerobic,
+          cardio: checkData.cardio,
           smoking: checkData.smoking,
-          exercise: checkData.exercise,
+
+          weight: parsedWeight,
           diary: diaryData
             .map((el) => {
               if (el.diary !== "") return el.diary;
@@ -121,9 +152,9 @@ export const TodayDiv = ({ curPageState, setCurPageState }: ITodayDiv) => {
         <div>체크리스트</div>
         <div></div>
         <div></div>
-        <div>일기 {page}</div>
         <div></div>
         <div></div>
+        <div>일기{page}</div>
         <div></div>
         <div></div>
         <div></div>
@@ -152,20 +183,82 @@ export const TodayDiv = ({ curPageState, setCurPageState }: ITodayDiv) => {
       <div className="note_right">
         <div className="note_bold note_bold_up"></div>
         <div className="note_bold"></div>
-        <div className="right_one">
-          <div>공부 시간</div>
-          <div>운동</div>
-          <div>흡연</div>
+
+        {/* 기상 취침 공부 */}
+        <div className="right_checkHeader">
+          <div>기상</div>
+          <div>취침</div>
+          <div>공부</div>
         </div>
-        <div className="right_two">
-          <div className="time">
+
+        {/* 기상 취침 공부를 위한 시간 input */}
+        <div className="right_checkHeader_time">
+          <div className="time wakeTime">
+            <input
+              type="number"
+              value={checkData.wakeTime.hour}
+              min={0}
+              max={24}
+              onChange={(e) => {
+                onUpdateWakeTime({
+                  hour: Number(e.target.value),
+                  minute: checkData.wakeTime.minute,
+                });
+              }}
+            />
+            시간
+            <input
+              type="number"
+              min={0}
+              max={60}
+              value={checkData.wakeTime.minute}
+              onChange={(e) => {
+                onUpdateWakeTime({
+                  hour: checkData.wakeTime.hour,
+                  minute: Number(e.target.value),
+                });
+              }}
+            />
+            분
+          </div>
+
+          <div className="time sleepTime">
+            <input
+              type="number"
+              min={0}
+              max={24}
+              value={checkData.sleepTime.hour}
+              onChange={(e) => {
+                onUpdateSleepTime({
+                  hour: Number(e.target.value),
+                  minute: checkData.sleepTime.minute,
+                });
+              }}
+            />
+            시간
+            <input
+              type="number"
+              min={0}
+              max={60}
+              value={checkData.sleepTime.minute}
+              onChange={(e) => {
+                onUpdateSleepTime({
+                  hour: checkData.sleepTime.hour,
+                  minute: Number(e.target.value),
+                });
+              }}
+            />
+            분
+          </div>
+
+          <div className="time studyTime">
             <input
               type="number"
               value={checkData.studyTime.hour}
               min={0}
               max={24}
               onChange={(e) => {
-                onUpdateStudyTimeCheck({
+                onUpdateStudyTime({
                   hour: Number(e.target.value),
                   minute: checkData.studyTime.minute,
                 });
@@ -178,7 +271,7 @@ export const TodayDiv = ({ curPageState, setCurPageState }: ITodayDiv) => {
               max={60}
               value={checkData.studyTime.minute}
               onChange={(e) => {
-                onUpdateStudyTimeCheck({
+                onUpdateStudyTime({
                   hour: checkData.studyTime.hour,
                   minute: Number(e.target.value),
                 });
@@ -186,18 +279,56 @@ export const TodayDiv = ({ curPageState, setCurPageState }: ITodayDiv) => {
             />
             분
           </div>
+          <div></div>
+          <div></div>
+        </div>
+
+        {/* 아침 점심 저녁 */}
+        <div className="right_checkHeader">
+          <span>무산소</span>
+          <span>유산소</span>
+          <span>몸무게</span>
+          <span>흡연</span>
+        </div>
+
+        <div className="right_checkbox">
           <div>
             <input
-              name="exercise"
+              className="checkbox"
+              name="anaerobic"
               type="checkbox"
-              checked={checkData.exercise}
+              checked={checkData.anaerobic}
               onChange={() => {
-                onUpdateExerciseCheck(!checkData.exercise);
+                onUpdateAnaerobicCheck(!checkData.anaerobic);
               }}
             />
           </div>
           <div>
             <input
+              className="checkbox"
+              name="cardio"
+              type="checkbox"
+              checked={checkData.cardio}
+              onChange={() => {
+                onUpdateCardioCheck(!checkData.cardio);
+              }}
+            />
+          </div>
+
+          <div className="right_checkbox_weight">
+            <input
+              type="text"
+              value={checkData.weight}
+              onChange={(e) => {
+                onUpdateWeight(e.target.value);
+              }}
+            />
+            kg
+          </div>
+
+          <div>
+            <input
+              className="checkbox"
               name="smoking"
               type="checkbox"
               checked={checkData.smoking}
@@ -207,6 +338,9 @@ export const TodayDiv = ({ curPageState, setCurPageState }: ITodayDiv) => {
             />
           </div>
         </div>
+
+        <div></div>
+
         <div></div>
         <div>
           <textarea
@@ -219,9 +353,6 @@ export const TodayDiv = ({ curPageState, setCurPageState }: ITodayDiv) => {
             placeholder="오늘은 어떤 일이 있었나요?"
           ></textarea>
         </div>
-        <div></div>
-        <div></div>
-        <div></div>
         <div></div>
         <div></div>
         <div></div>

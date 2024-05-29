@@ -34,9 +34,13 @@ export const CREATE_CHECKLIST_MUTATION = gql`
       id
       createdAt
       smoking
-      exercise
+      anaerobic
+      cardio
       studyTime
+      wakeTime
+      sleepTime
       diary
+      weight
       user {
         id
       }

@@ -3,11 +3,11 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from 'api/auth/auth.module';
-import { CheckListModule } from 'api/checkList/checkList.module';
-import { CheckList } from 'api/checkList/entities/checkList.entity';
-import { User } from 'api/user/entities/user.entity';
-import { UserModule } from 'api/user/user.module';
+import { AuthModule } from 'src/api/auth/auth.module';
+import { CheckListModule } from 'src/api/checkList/checkList.module';
+import { CheckList } from 'src/api/checkList/entities/checkList.entity';
+import { User } from 'src/api/user/entities/user.entity';
+import { UserModule } from 'src/api/user/user.module';
 
 @Module({
   imports: [

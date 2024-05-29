@@ -14,6 +14,7 @@ export const Island = (props: IProp) => {
     { site: "SMOKING", path: "/SMOKING/1" },
     { site: "EXERCISE", path: "/EXERCISE/1" },
     { site: "DIARYCHECK", path: "/DIARYCHECK/1" },
+    { site: "SLEEP", path: "/SLEEP/1" },
     { site: "STUDY", path: "/STUDY/1" },
     { site: "LOGIN", path: "/" },
   ];

@@ -5,7 +5,7 @@ import {
   IAuthServiceRestoreAccessToken,
   IAuthServiceSetRefreshToken,
 } from './interfaces/auth-service.interface';
-import { UserService } from 'api/user/user.service';
+import { UserService } from 'src/api/user/user.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
@@ -48,7 +48,14 @@ export class AuthService {
       { secret: process.env.REFRESH_TOKEN_PASSWORD, expiresIn: '23h' },
     );
 
-    context.res.setHeader('set-Cookie', `refreshToken=${refreshToken}`);
+    // 쿠키 옵션 설정
+    const cookieOptions = [
+      `refreshToken=${refreshToken}`,
+      'HttpOnly', // 클라이언트 측 JavaScript에서 쿠키 접근 불가
+      'Secure', // HTTPS 연결에서만 전송
+    ];
+
+    context.res.setHeader('Set-Cookie', cookieOptions.join('; '));
   }
 
   getAccessToken({ user }: IAuthServiceGetAccessToken): string {

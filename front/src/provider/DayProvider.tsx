@@ -5,12 +5,9 @@ import {
   createContext,
   useState,
 } from "react";
-import { changeToDate } from "../utils/date";
 
 interface Day {
-  smoking: boolean;
-  exercise: boolean;
-  studyTime: Date;
+  createdAt: Date;
   diary: string;
 }
 
@@ -22,9 +19,7 @@ interface DayDispatch {
 }
 
 const clickDay: Day = {
-  smoking: false,
-  exercise: false,
-  studyTime: changeToDate(0, 0),
+  createdAt: new Date(),
   diary: "",
 };
 
@@ -53,8 +48,8 @@ const DayProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [diaryArrayState, setDiaryArrayState] =
     useState<{ diary: string; nextButton: boolean }[]>(baseDiary);
   return (
-    <DayStateContext.Provider value={{ dayState, diaryArrayState }}>
-      <DayDispatchContext.Provider value={{ setDayState, setDiaryArrayState }}>
+    <DayStateContext.Provider value={{ diaryArrayState, dayState }}>
+      <DayDispatchContext.Provider value={{ setDiaryArrayState, setDayState }}>
         {children}
       </DayDispatchContext.Provider>
     </DayStateContext.Provider>

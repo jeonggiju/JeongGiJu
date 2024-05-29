@@ -1,15 +1,22 @@
-import { useMutation, useQuery } from "@apollo/client";
-import { ReactNode, createContext, useEffect, useReducer } from "react";
+import { useMutation } from "@apollo/client";
+import { ReactNode, createContext, useReducer } from "react";
 import { CREATE_CHECKLIST_MUTATION } from "../graphql/mutations";
-import { GET_CHECKLISTS_BY_USER } from "../graphql/queries";
 
 // 처음 db에 정보를 가져옴
 export interface ICheckList {
   id: string;
   createdAt: Date;
-  smoking: boolean;
-  exercise: boolean;
+
+  wakeTime: Date;
+  sleepTime: Date;
   studyTime: Date;
+
+  smoking: boolean;
+  cardio: boolean;
+  anaerobic: boolean;
+
+  weight: number;
+
   diary: string;
   user: {
     id: string;
@@ -24,7 +31,7 @@ interface Action {
 interface IDaysDispatchContext {
   onCreate: (checkList: Omit<ICheckList, "id" | "createdAt" | "user">) => void;
 
-  onInit: (checkList: ICheckList) => void;
+  onInit: (checkList: ICheckList[]) => void;
 }
 
 interface IDaysStateContext {
@@ -59,40 +66,27 @@ const DaysProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   >(reducer, []);
 
   const [createCheckList] = useMutation(CREATE_CHECKLIST_MUTATION);
-  const { data } = useQuery(GET_CHECKLISTS_BY_USER, {
-    variables: { userId: "e9885745-1749-4bfe-bcd7-d14e19c78439" },
-  });
-
-  useEffect(() => {
-    if (data && data.findAllCheckList) {
-      const formattedData = data.findAllCheckList.map((item: ICheckList) => ({
-        ...item,
-        createdAt: new Date(item.createdAt),
-        studyTime: new Date(item.studyTime),
-        user: {
-          id: item.user.id,
-        },
-      }));
-      dispatchCheckList({
-        type: "INIT",
-        data: formattedData,
-      });
-    }
-  }, [data]);
 
   const onCreate = async (
-    checkList: Pick<ICheckList, "diary" | "exercise" | "smoking" | "studyTime">
+    checkList: Omit<ICheckList, "id" | "user" | "createdAt">
   ) => {
     try {
       const response = await createCheckList({
         variables: {
           createCheckListInput: {
-            exercise: checkList.exercise,
+            wakeTime: new Date(checkList.wakeTime).toISOString(),
+            sleepTime: new Date(checkList.sleepTime).toISOString(),
             studyTime: new Date(checkList.studyTime).toISOString(),
-            diary: checkList.diary,
+
+            anaerobic: checkList.anaerobic,
+            cardio: checkList.cardio,
             smoking: checkList.smoking,
+
+            weight: checkList.weight,
+
+            diary: checkList.diary,
           },
-          userId: "e9885745-1749-4bfe-bcd7-d14e19c78439",
+          userId: "6e8198e9-65c8-49c8-9a0a-d17f4e1b5173",
         },
       });
 
@@ -102,10 +96,17 @@ const DaysProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           data: {
             id: response.data.createCheckList.id,
             createdAt: new Date(response.data.createCheckList.createdAt),
+
+            wakeTime: new Date(response.data.createCheckList.wakeTime),
+            sleepTime: new Date(response.data.createCheckList.sleepTime),
             studyTime: new Date(response.data.createCheckList.studyTime),
+
+            anaerobic: response.data.createCheckList.anaerobic,
+            cardio: response.data.cardio,
             smoking: response.data.createCheckList.smoking,
-            exercise: response.data.createCheckList.exercise,
             diary: response.data.createCheckList.diary,
+
+            weight: response.data.createCheckList.weight,
             user: { id: response.data.createCheckList.user.id },
           },
         });
@@ -116,22 +117,29 @@ const DaysProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
-  const onInit = async (checkList: ICheckList) => {
+  const onInit = async (checkList: ICheckList[]) => {
     dispatchCheckList({
       type: "INIT",
-      data: {
-        id: checkList.id,
-        createdAt: new Date(checkList.createdAt),
-        studyTime: new Date(checkList.studyTime),
-        smoking: checkList.smoking,
-        exercise: checkList.exercise,
-        diary: checkList.diary,
-        user: {
-          id: checkList.user.id,
-        },
-      },
+      data: checkList,
     });
   };
+
+  // const onInit = async (checkList: ICheckList) => {
+  //   dispatchCheckList({
+  //     type: "INIT",
+  //     data: {
+  //       id: checkList.id,
+  //       createdAt: new Date(checkList.createdAt),
+  //       studyTime: new Date(checkList.studyTime),
+  //       smoking: checkList.smoking,
+  //       exercise: checkList.exercise,
+  //       diary: checkList.diary,
+  //       user: {
+  //         id: checkList.user.id,
+  //       },
+  //     },
+  //   });
+  // };
 
   return (
     <DaysStateContext.Provider value={{ checkList }}>

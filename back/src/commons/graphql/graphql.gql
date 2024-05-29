@@ -5,9 +5,13 @@
 type CheckList {
   id: String!
   diary: String!
-  smoking: Boolean!
-  exercise: Boolean!
   studyTime: DateTime!
+  wakeTime: DateTime!
+  sleepTime: DateTime!
+  smoking: Boolean!
+  anaerobic: Boolean!
+  weight: Float!
+  cardio: Boolean!
   user: User!
   createdAt: DateTime!
 }
@@ -42,8 +46,12 @@ input CreateUserInput {
 }
 
 input CreateCheckListInput {
-  exercise: Boolean!
+  anaerobic: Boolean!
+  cardio: Boolean!
   smoking: Boolean!
   studyTime: DateTime!
+  wakeTime: DateTime!
+  sleepTime: DateTime!
   diary: String!
+  weight: Float!
 }

@@ -13,9 +13,15 @@ interface DiaryElement {
 }
 
 interface CheckElement {
-  smoking: boolean;
-  exercise: boolean;
+  wakeTime: { hour: number; minute: number };
+  sleepTime: { hour: number; minute: number };
   studyTime: { hour: number; minute: number };
+
+  anaerobic: boolean;
+  cardio: boolean;
+  smoking: boolean;
+
+  weight: string;
 }
 
 interface ActionDiary {
@@ -24,16 +30,30 @@ interface ActionDiary {
 }
 
 interface ActionCheck {
-  type: "UPDATE_SMOKING" | "UPDATE_EXERCISE" | "UPDATE_STUDY_TIME" | "INIT";
+  type:
+    | "UPDATE_WAKETIME"
+    | "UPDATE_SLEEPTIME"
+    | "UPDATE_STUDYTIME"
+    | "UPDATE_SMOKING"
+    | "UPDATE_ANAEROBIC"
+    | "UPDATE_CARDIO"
+    | "UPDATE_WEIGHT"
+    | "INIT";
   data: CheckElement;
 }
 
 interface DiaryDispatch {
   onCreateDiary: ({ page, diary }: IOnCreateDiary) => void;
   onInitDiary: () => void;
+
+  onUpdateWakeTime: (wakeTime: { hour: number; minute: number }) => void;
+  onUpdateSleepTime: (sleepTime: { hour: number; minute: number }) => void;
+  onUpdateStudyTime: (studyTime: { hour: number; minute: number }) => void;
+
+  onUpdateAnaerobicCheck: (anaerobic: boolean) => void;
+  onUpdateCardioCheck: (cardio: boolean) => void;
   onUpdateSmokingCheck: (smoking: boolean) => void;
-  onUpdateExerciseCheck: (exercise: boolean) => void;
-  onUpdateStudyTimeCheck: (studyTime: { hour: number; minute: number }) => void;
+  onUpdateWeight: (weight: string) => void;
   setCurDiaryState: React.Dispatch<SetStateAction<string>>;
   onInitCheck: () => void;
 }
@@ -50,9 +70,15 @@ interface IOnCreateDiary {
 }
 
 const baseCheck: CheckElement = {
-  smoking: false,
-  exercise: false,
+  wakeTime: setHourMinute(0, 0),
+  sleepTime: setHourMinute(0, 0),
   studyTime: setHourMinute(0, 0),
+
+  anaerobic: false,
+  cardio: false,
+  smoking: false,
+
+  weight: "",
 };
 
 const baseDiary: DiaryElement[] = [
@@ -71,14 +97,30 @@ function CheckReducer(state: CheckElement, action: ActionCheck): CheckElement {
   let nextState: CheckElement;
 
   switch (action.type) {
+    case "UPDATE_WAKETIME":
+      nextState = { ...state, wakeTime: action.data.wakeTime };
+      break;
+
+    case "UPDATE_SLEEPTIME":
+      nextState = { ...state, sleepTime: action.data.sleepTime };
+      break;
+
+    case "UPDATE_STUDYTIME":
+      nextState = { ...state, studyTime: action.data.studyTime };
+      break;
+
     case "UPDATE_SMOKING":
       nextState = { ...state, smoking: action.data.smoking };
       break;
-    case "UPDATE_EXERCISE":
-      nextState = { ...state, exercise: action.data.exercise };
+    case "UPDATE_ANAEROBIC":
+      nextState = { ...state, anaerobic: action.data.anaerobic };
       break;
-    case "UPDATE_STUDY_TIME":
-      nextState = { ...state, studyTime: action.data.studyTime };
+    case "UPDATE_CARDIO":
+      nextState = { ...state, cardio: action.data.cardio };
+      break;
+
+    case "UPDATE_WEIGHT":
+      nextState = { ...state, weight: action.data.weight };
       break;
     case "INIT":
       nextState = baseCheck;
@@ -126,6 +168,37 @@ const DiariesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   // 현재 페이지의 데이터
   const [curDiaryState, setCurDiaryState] = useState<string>("");
+
+  const onUpdateWakeTime = (wakeTime: { hour: number; minute: number }) => {
+    checkDispatch({
+      type: "UPDATE_WAKETIME",
+      data: {
+        ...checkData,
+        wakeTime,
+      },
+    });
+  };
+
+  const onUpdateSleepTime = (sleepTime: { hour: number; minute: number }) => {
+    checkDispatch({
+      type: "UPDATE_SLEEPTIME",
+      data: {
+        ...checkData,
+        sleepTime,
+      },
+    });
+  };
+
+  const onUpdateStudyTime = (studyTime: { hour: number; minute: number }) => {
+    checkDispatch({
+      type: "UPDATE_STUDYTIME",
+      data: {
+        ...checkData,
+        studyTime,
+      },
+    });
+  };
+
   const onUpdateSmokingCheck = (smoking: boolean) => {
     checkDispatch({
       type: "UPDATE_SMOKING",
@@ -136,25 +209,32 @@ const DiariesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     });
   };
 
-  const onUpdateExerciseCheck = (exercise: boolean) => {
+  const onUpdateAnaerobicCheck = (anaerobic: boolean) => {
     checkDispatch({
-      type: "UPDATE_EXERCISE",
+      type: "UPDATE_ANAEROBIC",
       data: {
         ...checkData,
-        exercise,
+        anaerobic,
       },
     });
   };
 
-  const onUpdateStudyTimeCheck = (studyTime: {
-    hour: number;
-    minute: number;
-  }) => {
+  const onUpdateCardioCheck = (cardio: boolean) => {
     checkDispatch({
-      type: "UPDATE_STUDY_TIME",
+      type: "UPDATE_CARDIO",
       data: {
         ...checkData,
-        studyTime,
+        cardio,
+      },
+    });
+  };
+
+  const onUpdateWeight = (weight: string) => {
+    checkDispatch({
+      type: "UPDATE_WEIGHT",
+      data: {
+        ...checkData,
+        weight,
       },
     });
   };
@@ -194,9 +274,16 @@ const DiariesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         value={{
           onCreateDiary,
           onInitDiary,
-          onUpdateExerciseCheck,
+
+          onUpdateWakeTime,
+          onUpdateSleepTime,
+          onUpdateStudyTime,
+
+          onUpdateAnaerobicCheck,
+          onUpdateCardioCheck,
           onUpdateSmokingCheck,
-          onUpdateStudyTimeCheck,
+
+          onUpdateWeight,
           onInitCheck,
           setCurDiaryState,
         }}

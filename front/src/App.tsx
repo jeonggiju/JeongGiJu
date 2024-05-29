@@ -11,30 +11,28 @@ import { DaysProvider } from "./provider/DaysProvider.tsx";
 import { DiariesProvider } from "./provider/DiariesProvider.tsx";
 import { DiaryCheck } from "./pages/DiaryCheck.tsx";
 import { DayProvider } from "./provider/DayProvider.tsx";
-import { AuthProvider } from "./provider/AuthProvider.tsx";
-// import { AuthProvider } from "./provider/AuthProvider.tsx";
+import Sleep from "./pages/Sleep.tsx";
 
 function App() {
   return (
     <>
-      <AuthProvider>
-        <DaysProvider>
-          <DiariesProvider>
-            <DayProvider>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/DIARY/:page" element={<Diary />} />
-                <Route path="/DIARYCHECK/:page" element={<DiaryCheck />} />
-                <Route path="/EXERCISE/:page" element={<Exercise />} />
-                <Route path="/TODAY/:page" element={<Today />} />
-                <Route path="/SMOKING/:page" element={<Smoking />} />
-                <Route path="/STUDY/:page" element={<Study />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </DayProvider>
-          </DiariesProvider>
-        </DaysProvider>
-      </AuthProvider>
+      <DaysProvider>
+        <DiariesProvider>
+          <DayProvider>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/DIARY/:page" element={<Diary />} />
+              <Route path="/DIARYCHECK/:page" element={<DiaryCheck />} />
+              <Route path="/SLEEP/:page" element={<Sleep />} />
+              <Route path="/EXERCISE/:page" element={<Exercise />} />
+              <Route path="/TODAY/:page" element={<Today />} />
+              <Route path="/SMOKING/:page" element={<Smoking />} />
+              <Route path="/STUDY/:page" element={<Study />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </DayProvider>
+        </DiariesProvider>
+      </DaysProvider>
     </>
   );
 }

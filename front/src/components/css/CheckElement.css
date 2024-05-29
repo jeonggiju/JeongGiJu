@@ -8,6 +8,17 @@
   /* outline: 1px solid blue; */
 }
 
+.checkElement_exercise {
+  /* height: 4.55rem; */
+  height: 6.11rem;
+}
+
+.checkElement_sleep {
+  /* height: 4.55rem; */
+  height: 4.545rem;
+  /* outline: 1px solid red; */
+}
+
 .checkElement_date {
   display: flex;
   justify-content: center;
@@ -17,6 +28,7 @@
   font-size: 0.75rem;
   height: 1.459rem;
   font-weight: 700;
+  font-weight: 900;
   padding-bottom: 0.01rem;
   /* outline: 1px solid red; */
 }
@@ -46,9 +58,33 @@
   font-weight: 800;
 }
 
-.checkElement_diaryCheck_true:hover {
+.checkElement_content_diet {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.checkElement_content_diet:hover {
+  overflow: visible;
+  width: fit-content;
+  background-color: wheat;
+}
+
+.checkElement_diary_true:hover {
   cursor: pointer;
   transform: scale(1.3);
   border-radius: 5px;
   outline: 1px solid black;
+}
+
+.leftSecond {
+  font-weight: 450;
+}
+
+.leftThird {
+  font-weight: 450;
+}
+
+.leftFourth {
+  font-weight: 450;
 }

@@ -19,7 +19,6 @@ export const Diary = () => {
   const { dayState, diaryArrayState } = useDayStateContext();
   const { setDiaryArrayState } = useDayDispatchContext();
   const [loading, setLoading] = useState<boolean>(true);
-
   const [curPageState, setCurPageState] = useState<number>(Number(page));
 
   const onClickLeft = () => {

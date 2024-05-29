@@ -47,6 +47,7 @@ export const TodayOther = ({ curPageState, setCurPageState }: ITodayOther) => {
 
   const onClickSubmit = () => {
     onCreateDiary({ page: Number(page), diary: curDiaryState });
+    console.log(curDiaryState);
     setSubmitState(true);
   };
 
@@ -74,15 +75,32 @@ export const TodayOther = ({ curPageState, setCurPageState }: ITodayOther) => {
   // 제출 버튼
   useEffect(() => {
     if (submitState) {
-      const result = window.confirm("오늘 일기를 다 쓰셨나요?");
-      if (result) {
+      const parsedWeight = parseFloat(checkData.weight);
+      if (isNaN(parsedWeight)) {
+        alert("잘못된 값입니다. 다시 확인해주세요");
+        return;
+      }
+
+      if (window.confirm("오늘 일기를 다 쓰셨나요?")) {
         const newDay = {
+          wakeTime: changeToDate(
+            checkData.wakeTime.hour,
+            checkData.wakeTime.minute
+          ),
+          sleepTime: changeToDate(
+            checkData.sleepTime.hour,
+            checkData.sleepTime.minute
+          ),
+
           studyTime: changeToDate(
             checkData.studyTime.hour,
             checkData.studyTime.minute
           ),
+
+          anaerobic: checkData.anaerobic,
+          cardio: checkData.cardio,
           smoking: checkData.smoking,
-          exercise: checkData.exercise,
+          weight: parsedWeight,
           diary: diaryData
             .map((el) => {
               if (el.diary !== "") return el.diary;

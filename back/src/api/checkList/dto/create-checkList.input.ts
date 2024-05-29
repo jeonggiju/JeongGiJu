@@ -3,7 +3,10 @@ import { Field, InputType } from '@nestjs/graphql';
 @InputType()
 export class CreateCheckListInput {
   @Field(() => Boolean)
-  exercise: boolean;
+  anaerobic: boolean;
+
+  @Field(() => Boolean)
+  cardio: boolean;
 
   @Field(() => Boolean)
   smoking: boolean;
@@ -11,6 +14,15 @@ export class CreateCheckListInput {
   @Field(() => Date)
   studyTime: Date;
 
+  @Field(() => Date)
+  wakeTime: Date;
+
+  @Field(() => Date)
+  sleepTime: Date;
+
   @Field(() => String)
   diary: string;
+
+  @Field(() => Number)
+  weight: number;
 }

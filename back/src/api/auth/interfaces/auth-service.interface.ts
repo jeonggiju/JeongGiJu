@@ -1,5 +1,5 @@
-import { IAuthUser, IContext } from 'api/common/interfaces/common';
-import { User } from 'api/user/entities/user.entity';
+import { IAuthUser, IContext } from 'src/api/common/interfaces/common';
+import { User } from 'src/api/user/entities/user.entity';
 
 export interface IAuthServiceLogin {
   email: string;

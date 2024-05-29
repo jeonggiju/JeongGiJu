@@ -34,9 +34,9 @@ export function getDateMonthDay(date: Date): string {
   return data;
 }
 
-export function getTime({ studyTime }: { studyTime: Date }): string {
-  const hour = studyTime.getHours();
-  const minute = studyTime.getMinutes();
+export function getTime(time: Date): string {
+  const hour = time.getHours();
+  const minute = time.getMinutes();
   const data = `${String(hour).padStart(2, "0")}:${String(minute).padStart(
     2,
     "0"
