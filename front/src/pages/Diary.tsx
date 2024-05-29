@@ -96,6 +96,7 @@ export const Diary = () => {
           <div>loading...</div>
         ) : (
           <TextLines
+            id={dayState.id}
             date={dateToString(dayState.createdAt)}
             diary={diaryArrayState[curPageState - 1].diary}
           />

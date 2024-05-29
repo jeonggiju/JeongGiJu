@@ -13,6 +13,13 @@ interface ICheckListServiceFindByCreatedAt {
   date: Date;
 }
 
+interface ICheckListRemove {
+  checkListId: string;
+}
+interface ICheckLIstFindOneById {
+  checkListId: string;
+}
+
 @Injectable()
 export class CheckListService {
   constructor(
@@ -47,6 +54,16 @@ export class CheckListService {
     });
   }
 
+  async findOneById({
+    checkListId,
+  }: ICheckLIstFindOneById): Promise<CheckList> {
+    const result = await this.checkListRepository.findOne({
+      where: { id: checkListId },
+      relations: ['user'],
+    });
+    return result;
+  }
+
   async create({
     userId,
     createCheckListInput,
@@ -66,5 +83,10 @@ export class CheckListService {
     });
 
     return await this.checkListRepository.save(result);
+  }
+  async remove({ checkListId }: ICheckListRemove): Promise<CheckList> {
+    const checkList = await this.findOneById({ checkListId });
+    const result = await this.checkListRepository.softRemove(checkList);
+    return result;
   }
 }

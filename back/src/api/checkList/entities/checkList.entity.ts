@@ -3,6 +3,7 @@ import { User } from 'src/api/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -54,4 +55,7 @@ export class CheckList {
   @CreateDateColumn()
   @Field(() => Date)
   createdAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

@@ -38,6 +38,7 @@ type Mutation {
   restoreAccessToken: String!
   createUser(createUserInput: CreateUserInput!): User!
   createCheckList(createCheckListInput: CreateCheckListInput!, userId: String!): CheckList!
+  removeCheckList(checkListId: String!): CheckList!
 }
 
 input CreateUserInput {

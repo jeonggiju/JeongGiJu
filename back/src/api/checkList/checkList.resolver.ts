@@ -44,4 +44,11 @@ export class CheckListResolver {
       createCheckListInput,
     });
   }
+
+  @Mutation(() => CheckList)
+  removeCheckList(
+    @Args('checkListId') checkListId: string,
+  ): Promise<CheckList> {
+    return this.checkListService.remove({ checkListId });
+  }
 }

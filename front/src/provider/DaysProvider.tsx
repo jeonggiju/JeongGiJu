@@ -1,6 +1,10 @@
 import { useMutation } from "@apollo/client";
 import { ReactNode, createContext, useReducer } from "react";
-import { CREATE_CHECKLIST_MUTATION } from "../graphql/mutations";
+import {
+  CREATE_CHECKLIST_MUTATION,
+  REMOVE_CHECKLIST_MUTATION,
+} from "../graphql/mutations";
+import { useNavigate } from "react-router-dom";
 
 // 처음 db에 정보를 가져옴
 export interface ICheckList {
@@ -24,12 +28,13 @@ export interface ICheckList {
 }
 
 interface Action {
-  data: ICheckList | ICheckList[];
+  data: ICheckList | ICheckList[] | string;
   type: string;
 }
 
 interface IDaysDispatchContext {
   onCreate: (checkList: Omit<ICheckList, "id" | "createdAt" | "user">) => void;
+  onDelete: (Id: string) => void;
 
   onInit: (checkList: ICheckList[]) => void;
 }
@@ -51,6 +56,9 @@ function reducer(state: ICheckList[], action: Action): ICheckList[] {
       nextState = [...state, action.data as ICheckList];
       break;
 
+    case "DELETE":
+      nextState = state.filter((el) => String(el.id) !== String(action.data));
+      break;
     default:
       nextState = state;
   }
@@ -64,8 +72,9 @@ const DaysProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [checkList, dispatchCheckList] = useReducer<
     React.Reducer<ICheckList[], Action>
   >(reducer, []);
-
+  const [removeCheckList] = useMutation(REMOVE_CHECKLIST_MUTATION);
   const [createCheckList] = useMutation(CREATE_CHECKLIST_MUTATION);
+  const nav = useNavigate();
 
   const onCreate = async (
     checkList: Omit<ICheckList, "id" | "user" | "createdAt">
@@ -124,26 +133,28 @@ const DaysProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     });
   };
 
-  // const onInit = async (checkList: ICheckList) => {
-  //   dispatchCheckList({
-  //     type: "INIT",
-  //     data: {
-  //       id: checkList.id,
-  //       createdAt: new Date(checkList.createdAt),
-  //       studyTime: new Date(checkList.studyTime),
-  //       smoking: checkList.smoking,
-  //       exercise: checkList.exercise,
-  //       diary: checkList.diary,
-  //       user: {
-  //         id: checkList.user.id,
-  //       },
-  //     },
-  //   });
-  // };
+  const onDelete = async (id: string) => {
+    let response;
+    try {
+      response = await removeCheckList({
+        variables: { checkListId: id },
+      });
+      if (response) alert("성공적으로 삭제 되었습니다.");
+
+      dispatchCheckList({
+        type: "DELETE",
+        data: id,
+      });
+
+      nav("/DIARYCHECK/1", { replace: true });
+    } catch (e) {
+      alert("삭제에 실패했습니다.");
+    }
+  };
 
   return (
     <DaysStateContext.Provider value={{ checkList }}>
-      <DaysDispatchContext.Provider value={{ onCreate, onInit }}>
+      <DaysDispatchContext.Provider value={{ onCreate, onInit, onDelete }}>
         {children}
       </DaysDispatchContext.Provider>
     </DaysStateContext.Provider>

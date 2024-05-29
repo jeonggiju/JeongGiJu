@@ -8,6 +8,7 @@ import {
 
 interface Day {
   createdAt: Date;
+  id: string;
   diary: string;
 }
 
@@ -19,6 +20,7 @@ interface DayDispatch {
 }
 
 const clickDay: Day = {
+  id: "",
   createdAt: new Date(),
   diary: "",
 };

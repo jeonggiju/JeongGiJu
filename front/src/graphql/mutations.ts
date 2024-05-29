@@ -47,3 +47,21 @@ export const CREATE_CHECKLIST_MUTATION = gql`
     }
   }
 `;
+
+export const REMOVE_CHECKLIST_MUTATION = gql`
+  mutation RemoveCheckList($checkListId: String!) {
+    removeCheckList(checkListId: $checkListId) {
+      id
+      createdAt
+      wakeTime
+      sleepTime
+      studyTime
+      smoking
+      diary
+      weight
+      user {
+        id
+      }
+    }
+  }
+`;

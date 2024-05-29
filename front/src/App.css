@@ -1,54 +1,19 @@
-@font-face {
-  font-family: "NotoSansKR-VariableFont_wght";
-  src: url("/NotoSansKR-VariableFont_wght.ttf");
-}
-
-* {
-  /* user-select: none; */
-}
-
-html,
-body {
-  margin: 0px;
-  width: 100%;
-  height: 100%;
-  background-color: rgb(246, 246, 246);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-}
-
-body * {
-  font-family: "NotoSansKR-VariableFont_wght";
-}
-
+/* App 컴포넌트에 대한 스타일 */
 .container {
-  width: 80%;
   padding: 20px;
   background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 600px) {
+/* 화면 크기에 따른 스타일 */
+@media (max-width: 768px) {
   .container {
-    width: 90%;
-    padding: 10px;
-  }
-}
-
-@media (min-width: 601px) and (max-width: 1200px) {
-  .container {
-    width: 80%;
     padding: 15px;
   }
 }
 
-@media (min-width: 1201px) {
+@media (max-width: 480px) {
   .container {
-    width: 60%;
-    padding: 20px;
+    padding: 10px;
   }
 }

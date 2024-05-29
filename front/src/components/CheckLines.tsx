@@ -121,7 +121,7 @@ export const CheckLines = ({ type, page }: IProps) => {
   }, [page, checkList, type]);
 
   const onClickDiary = (el: ICheckList) => {
-    setDayState({ createdAt: el.createdAt, diary: el.diary });
+    setDayState({ id: el.id, createdAt: el.createdAt, diary: el.diary });
     nav("/DIARY/1");
   };
 

@@ -9,7 +9,7 @@
 
 html,
 body {
-  margin: 0px;
+  margin: 0;
   width: 100%;
   height: 100%;
   background-color: rgb(246, 246, 246);
@@ -21,4 +21,28 @@ body {
 
 body * {
   font-family: "NotoSansKR-VariableFont_wght";
+}
+
+/* 전역 스타일 예시 */
+h1 {
+  font-size: 2rem;
+}
+
+p {
+  font-size: 1rem;
+}
+
+/* 화면 크기에 따른 전역 스타일 */
+@media (max-width: 768px) {
+  html,
+  body {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  html,
+  body {
+    flex-direction: column;
+  }
 }
