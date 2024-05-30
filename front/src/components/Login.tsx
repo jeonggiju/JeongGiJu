@@ -4,7 +4,7 @@ import Button from "./Button";
 import "./css/login.css";
 import { getTodayDate } from "../utils/date";
 import { useRef, useState } from "react";
-import { LOGIN_MUTATION } from "../graphql/mutations";
+import { CREATE_USER_MUTATION, LOGIN_MUTATION } from "../graphql/mutations";
 import { ICheckList } from "../provider/DaysProvider";
 import { GET_CHECKLISTS_BY_USER } from "../graphql/queries";
 import { useDaysDispatchContext } from "../hook/useDaysDispatchContext";
@@ -24,9 +24,41 @@ export const LoginFalse = (props: IProps) => {
     variables: { userId: "6e8198e9-65c8-49c8-9a0a-d17f4e1b5173" },
   });
 
-  const onClick = async () => {
+  const [createUser] = useMutation(CREATE_USER_MUTATION);
+
+  const onClickJoin = async () => {
+    if (email === "" || password === "") {
+      alert("이메일과 비밀번호를 확인해주세요.");
+    }
+
     try {
-      const response = await login({ variables: { email, password } });
+      const response = await createUser({
+        variables: {
+          createUserInput: {
+            email,
+            password,
+          },
+        },
+      });
+      if (response) {
+        alert("가입이 완료되었습니다.");
+      }
+    } catch (e) {
+      alert("이미 존재하는 이메일이에요.");
+    }
+  };
+
+  const onClickLogin = async () => {
+    try {
+      const response = await login({
+        variables: { email, password },
+
+        context: {
+          fetchOptions: {
+            credentials: "include", // 쿠키를 포함하여 요청
+          },
+        },
+      });
       if (response.data && response.data.login) {
         // 로컬 스토리지에 저장
         window.localStorage.setItem("accessToken", response.data.login);
@@ -76,8 +108,8 @@ export const LoginFalse = (props: IProps) => {
         onChange={(e) => setPassword(e.target.value)}
       />
       <div className="buttonBox">
-        <Button text="회원가입" />
-        <Button text="로그인" onClick={onClick} />
+        <Button text="회원가입" onClick={onClickJoin} />
+        <Button text="로그인" onClick={onClickLogin} />
       </div>
       {loading && <p>로그인 중...</p>}
       {error && <p>{error.message}</p>}

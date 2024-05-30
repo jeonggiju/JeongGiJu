@@ -48,14 +48,19 @@ export class AuthService {
       { secret: process.env.REFRESH_TOKEN_PASSWORD, expiresIn: '23h' },
     );
 
-    // 쿠키 옵션 설정
-    const cookieOptions = [
-      `refreshToken=${refreshToken}`,
-      'HttpOnly', // 클라이언트 측 JavaScript에서 쿠키 접근 불가
-      'Secure', // HTTPS 연결에서만 전송
-    ];
+    context.res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: true, // HTTPS에서만 전송
+      sameSite: 'none', // CORS를 고려한 설정
+    });
+    // // 쿠키 옵션 설정
+    // const cookieOptions = [
+    //   `refreshToken=${refreshToken}`,
+    //   'HttpOnly', // 클라이언트 측 JavaScript에서 쿠키 접근 불가
+    //   'Secure', // HTTPS 연결에서만 전송
+    // ];
 
-    context.res.setHeader('Set-Cookie', cookieOptions.join('; '));
+    // context.res.setHeader('Set-Cookie', cookieOptions.join('; '));
   }
 
   getAccessToken({ user }: IAuthServiceGetAccessToken): string {
